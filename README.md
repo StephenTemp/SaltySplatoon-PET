@@ -1,4 +1,19 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# How to get started with the project:
+
+# Windows:
+Run windows_setup.ps1 in PowerShell once after cloning the project.
+
+Run windows_run_backend.ps1 in PowerShell to run the backend.
+
+Run "yarn start" to start the frontend.
+
+# MacOS
+Run ./mac_os_setup in terminal once after cloning the project.
+
+Run ./mac_os_run_backend in terminal to start the backend.
+
+Run "yarn start" to start the frontend.
+
 
 ## Available Scripts
 
