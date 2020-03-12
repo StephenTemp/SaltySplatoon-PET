@@ -1,0 +1,7 @@
+chmod 755 mac_os_run_backend
+yarn
+cd backend-API
+source venv/bin/activate
+pip install flask python-dotenv
+deactivate
+cd ..
