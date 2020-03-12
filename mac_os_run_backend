@@ -1,0 +1,4 @@
+cd backend-API
+source venv/bin/activate
+flask run
+deactivate
