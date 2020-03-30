@@ -1,0 +1,37 @@
+header#headerstyle {
+    background-color: #6bbd28;
+    height: 5%;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+a {
+    background-color: white;
+    color: black;
+    border-radius: 6px;
+    padding: 5px 15px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin-left: 30px;
+    top: 10px;
+}
+h1 {
+    display: inline;
+    margin: 5px auto;
+    padding: 10px;
+}
+
+p#headbtn {
+    display: inline;
+    margin: 5px auto;
+    padding: 10px;
+    position: absolute;
+    top: -5px;
+}
+
+a#logbtn {
+    position: absolute;
+    right: -450px;
+    top: 5px;
+}
