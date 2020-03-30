@@ -1,36 +1,86 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
-function App() {
+import Home from './Home'
+import Profile from './Profile'
+import ViewReviews from './ViewReviews'
+import WriteRequestReviews from './WriteRequestReviews'
 
-  const [currentTime, setCurrentTime] = useState(0);
 
-  useEffect(() => {
-    fetch('/time').then(res => res.json()).then(data => {
-      setCurrentTime(data.time);
+class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {currentTime: 0};
+    this.setState({
+      currentTime: 0
     });
-  }, []);
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>The current time is {currentTime}.</p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    fetch('/time').then(res => res.json()).then(data => {
+      this.setState({
+        currentTime: data.time,
+      });
+    });
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(thing) {
+    console.log(thing);
+  }
+
+  render() {
+    return (
+      <Router>
+      <div>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/profile">Profile</Link>
+          </li>
+          <li>
+            <Link to="/viewreviews">View Reviews</Link>
+          </li>
+          <li>
+            <Link to="/writerequestreviews">Write Request Reviews</Link>
+          </li>
+        </ul>
+
+        <hr />
+
+        {/*
+          A <Switch> looks through all its children <Route>
+          elements and renders the first one whose path
+          matches the current URL. Use a <Switch> any time
+          you have multiple routes, but you want only one
+          of them to render at a time
+        */}
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/profile">
+            <Profile />
+          </Route>
+          <Route path="/viewreviews">
+            <ViewReviews />
+          </Route>
+          <Route path="/writerequestreviews">
+            <WriteRequestReviews />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
+    );
+  }
 }
 
 export default App;
