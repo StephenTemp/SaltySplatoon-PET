@@ -74,7 +74,7 @@ class App extends React.Component {
             <ViewReviews />
           </Route>
           <Route path="/writerequestreviews">
-            <WriteRequestReviews />
+            <WriteRequestReviews number1={25}/>
           </Route>
         </Switch>
       </div>

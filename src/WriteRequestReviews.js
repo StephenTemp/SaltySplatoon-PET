@@ -5,7 +5,30 @@ class WriteRequestReviews extends React.Component {
     
     constructor(props) {
         super(props);
-        this.state = {currentTime: 0};
+        let fakeRequestPeople = ["Alexandru M", "Alex Zhou", "Stephen", "Sam"]
+        let fakeRequests = [
+          {
+            requesterName: "Person 1",
+            dateRequested: "March 31",
+            content: ""
+          },
+          {
+            requesterName: "Person 2",
+            dateRequested: "March 31",
+            content: ""
+          },
+          {
+            requesterName: "Person 3",
+            dateRequested: "March 31",
+            content: ""
+          }
+        ]
+        this.state = {
+          currentTime: 0,
+          fakeRequestPeople: fakeRequestPeople,
+          fakeRequests: fakeRequests,
+          reviewer: "Reviewer 1"
+        };
         this.setState({
           currentTime: 0
         });
@@ -16,12 +39,26 @@ class WriteRequestReviews extends React.Component {
           });
         });
     }
+
+    setThis() {
+
+    }
     
     render() {
         return (
           <div className="App">
+            <p>
+                This is the WriteRequestReviews.js file. The number is {this.props.number1}.
+            </p>
+            <div className = "request-reviews">
+            
+            </div>
+            <div className = "write-reviews">
+            
+            </div>
+{/* 
               <p>
-                This is the WriteRequestReviews.js file
+                This is the WriteRequestReviews.js file. The number is {this.props.number1}.
             </p>
             <header className="App-header">
               <img src={logo} className="App-logo" alt="logo" />
@@ -37,7 +74,7 @@ class WriteRequestReviews extends React.Component {
               >
                 Learn React
               </a>
-            </header>
+            </header> */}
           </div>
         );
       }
