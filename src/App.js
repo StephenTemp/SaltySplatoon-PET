@@ -18,7 +18,6 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {currentTime: 0};
-
     this.handleClick = this.handleClick.bind(this);
   }
 
