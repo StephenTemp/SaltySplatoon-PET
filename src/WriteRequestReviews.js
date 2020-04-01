@@ -24,11 +24,7 @@ class WriteRequestReviews extends React.Component {
             dateRequested: "March 31",
             content: ""
           }
-<<<<<<< Updated upstream
         ]
-=======
-        ] 
->>>>>>> Stashed changes
         this.state = {
           currentTime: 0,
           fakeRequestPeople: fakeRequestPeople,
@@ -37,11 +33,8 @@ class WriteRequestReviews extends React.Component {
         };
     }
 
-<<<<<<< Updated upstream
-=======
     
 
->>>>>>> Stashed changes
     componentDidMount(){
       this.setState({
         currentTime: 5
@@ -70,11 +63,7 @@ class WriteRequestReviews extends React.Component {
             
             </div>
             <div className = "write-reviews">
-<<<<<<< Updated upstream
-            
-=======
               <Request requests={ this.state.fakeRequests }/>
->>>>>>> Stashed changes
             </div>
 {/* 
               <p>
