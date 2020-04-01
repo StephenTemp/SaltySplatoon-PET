@@ -29,16 +29,20 @@ class WriteRequestReviews extends React.Component {
           fakeRequests: fakeRequests,
           reviewer: "Reviewer 1"
         };
-        this.setState({
-          currentTime: 0
-        });
-    
-        fetch('/time').then(res => res.json()).then(data => {
-          this.setState({
-            currentTime: data.time,
-          });
-        });
     }
+
+    componentDidMount(){
+      this.setState({
+        currentTime: 5
+      });
+      console.log(this.state.currentTime)
+      fetch('/time').then(res => res.json()).then(data => {
+        this.setState({
+          currentTime: data.time,
+        });
+      });
+    }
+
 
     setThis() {
 
