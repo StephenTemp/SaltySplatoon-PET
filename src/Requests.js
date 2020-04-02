@@ -35,9 +35,21 @@ class Requests extends React.Component {
     }
 
 
-    handleTextChange(e, index) {
-        console.log("New text for " + index + "is: " + e.target.value)
-        console.log("Word count is: " + e.target.value.trim().split(" ").length);
+    handleTextChange(e, ind) {
+        console.log("New text for " + ind + "is: " + e.target.value)
+        //console.log("Word count is: " + e.target.value.trim().split(" ").length);
+        console.log("Word count is: " + e.target.value.length);
+        console.log(e)
+        this.setState({ requests: this.state.requests.map((request, index) => {
+            if (index === ind){
+                // console.log(e.target.value.length)
+                // console.log(request.requesterName)
+                request.text_length_left = e.target.value.length
+            }
+            return request
+        })
+            //text_length_left: e.target.value.length
+        })
     }
 
     Hidden = (requesterName) => {
@@ -71,6 +83,7 @@ class Requests extends React.Component {
                     </p>
                     <Collapse isOpen={this.state.requests[index].collapsed}>
                         <textarea id='textarea' style={textareastyle} name='textarea' rows='10' onChange={(e)=>{this.handleTextChange(e,index)}}></textarea>
+                        <p id='char_count' sytle={char_count_style} >{request.text_length_left}/5000</p>
                     </Collapse>
                 </p>
             </Container>
@@ -97,6 +110,11 @@ const h4inlinestyle = {
 const textareastyle = {
     'overflow-y': 'hidden',
     width: '80%' 
+}
+
+const char_count_style = {
+    position: 'relative',
+    left: '35%'
 }
 
 // function Requests ({faq, index, toggleFAQ}) {
