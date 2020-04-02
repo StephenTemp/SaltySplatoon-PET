@@ -1,27 +1,72 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Review from './Reviews'
+
 class ViewReviews extends React.Component {
     
     constructor(props) {
         super(props);
-        this.state = {currentTime: 0};
+        let fakeReviewPeople = ["P1", "P2", "P3", "P4"]
+        let fakeReviews = [
+          {
+            reviewerName: "Person 1",
+            dateReviewed: "March 31",
+            content: ""
+          },
+          {
+            reviewerName: "Person 2",
+            dateReviewed: "March 31",
+            content: ""
+          },
+          {
+            reviewerName: "Person 2",
+            dateReviewed: "March 31",
+            content: ""
+          }
+        ]
+
+        fakeReviews = fakeReviews.map(obj => {
+          obj['collapsed'] = true;
+          return obj;
+        });
+
+        this.state = {
+          currentTime: 0,
+          fakeReviewPeople: fakeReviewPeople,
+          fakeReviews: fakeReviews,
+          reviewer: "Reviewer 1"
+        };
+    }
+
+    componentDidMount(){
+      this.setState({
+        currentTime: 5
+      });
+      console.log(this.state.currentTime)
+      fetch('/time').then(res => res.json()).then(data => {
         this.setState({
-          currentTime: 0
+          currentTime: data.time,
         });
-    
-        fetch('/time').then(res => res.json()).then(data => {
-          this.setState({
-            currentTime: data.time,
-          });
-        });
+      });
+    }
+
+    setThis() {
+
     }
 
     render() {
+      console.log(this.state.fakeReviews)
         return (
           <div className="App">
+            <p>
+                This is the ViewReviews.js file. The number is {this.props.number1}.
+            </p>
+            <div className = "view-reviews">
+              <Review reviews={ this.state.fakeReviews }/>
+            </div>
+{/* 
               <p>
-                This is the ViewReviews.js file
+                This is the ViewReviews.js file. The number is {this.props.number1}.
             </p>
             <header className="App-header">
               <img src={logo} className="App-logo" alt="logo" />
@@ -37,7 +82,7 @@ class ViewReviews extends React.Component {
               >
                 Learn React
               </a>
-            </header>
+            </header> */}
           </div>
         );
       }
