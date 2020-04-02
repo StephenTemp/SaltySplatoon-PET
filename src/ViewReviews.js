@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Review from './Reviews'
+import {Container, Row, Col} from 'react-bootstrap';
 
 class ViewReviews extends React.Component {
     
@@ -61,6 +62,14 @@ class ViewReviews extends React.Component {
             <p>
                 This is the ViewReviews.js file. The number is {this.props.number1}.
             </p>
+            <Container>
+              <Row>
+                <Col>userID</Col>
+                <Col>Coworker Last Name</Col>
+                <Col>Coworker First Name</Col>
+                <Col>Time Posted</Col>
+              </Row>
+            </Container>
             <div className = "view-reviews">
               <Review reviews={ this.state.fakeReviews }/>
             </div>
