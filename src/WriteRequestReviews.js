@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Request from './Requests'
 
@@ -25,6 +24,12 @@ class WriteRequestReviews extends React.Component {
             content: ""
           }
         ]
+
+        fakeRequests = fakeRequests.map(obj => {
+          obj['collapsed'] = true;
+          return obj;
+        });
+
         this.state = {
           currentTime: 0,
           fakeRequestPeople: fakeRequestPeople,
@@ -46,7 +51,6 @@ class WriteRequestReviews extends React.Component {
         });
       });
     }
-
 
     setThis() {
 
