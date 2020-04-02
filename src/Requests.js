@@ -52,6 +52,19 @@ class Requests extends React.Component {
         })
     }
 
+    handleSaveReview(e, index){
+        var saveContent = document.getElementById('textarea').value
+        // this.setState({ requests: this.state.requests.map(request => {
+
+        // }) })
+        var requestsCopy = [...this.state.requests];
+        requestsCopy[index].content = saveContent;
+        this.setState({ 
+            requests: requestsCopy
+         })
+        console.log(this.state.requests)
+    }
+
     Hidden = (requesterName) => {
         var hiddentextarea = document.getElementById('textarea')
         if (hiddentextarea.style.display === 'none'){
@@ -84,6 +97,9 @@ class Requests extends React.Component {
                     <Collapse isOpen={this.state.requests[index].collapsed}>
                         <textarea id='textarea' style={textareastyle} name='textarea' rows='10' onChange={(e)=>{this.handleTextChange(e,index)}}></textarea>
                         <p id='char_count' sytle={char_count_style} >{request.text_length_left}/5000</p>
+                        <br></br>
+                        <Button id='savebtn' color='success' onClick={(e) => (this.handleSaveReview(e, index))}>Save</Button>
+                        <Button id='sendreviewbtn'>Send Review</Button>
                     </Collapse>
                 </p>
             </Container>
