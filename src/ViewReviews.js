@@ -33,7 +33,7 @@ class ViewReviews extends React.Component {
         ]
 
         fakeReviews = fakeReviews.map(obj => {
-          obj['collapsed'] = true;
+          obj['collapsed'] = false;
           return obj;
         });
 

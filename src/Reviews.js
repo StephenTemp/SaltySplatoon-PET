@@ -10,9 +10,6 @@ class Reviews extends React.Component {
 			c: true
 		}
 		this.handleCollapse = this.handleCollapse.bind(this);
-		//Potentially remove these
-		this.handleRejectReview = this.handleRejectReview.bind(this);
-        this.handleTextChange = this.handleTextChange.bind(this);
 	}
 
 	handleCollapse(index){
@@ -22,21 +19,6 @@ class Reviews extends React.Component {
 		this.setState({
 			reviews: reviewsCopy
 		})
-	}
-
-	handleRejectReview(e, index){
-		//Required for preventing collapse on button click
-		e.stopPropagation();
-		let reviewsCopy = [...this.state.reviews];
-		reviewsCopy.splice(index, 1);
-		this.setState({
-			reviews: reviewsCopy
-		})
-	}
-
-	handleTextChange(e, index){
-		console.log("New text for " + index + "is: " + e.target.value)
-		console.log("Word count is: " + e.target.value.trim().split(" ").length);
 	}
 
 	Hidden = (reviewerName) => {
