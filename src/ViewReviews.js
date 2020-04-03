@@ -14,7 +14,7 @@ class ViewReviews extends React.Component {
             reviewerLName: "Last Name 1",
             reviewerFName: "First Name 1",
             dateReviewed: "March 31",
-            content: "This is a review 1"
+            content: "My opinion on giving this review is said worker is a person who likes to do a lot of work but I can't tell if he is good at work or if he pays someone else to do it but if that's the case then I don't know why we pay him and not pay the other person but then again my mom tells me I just kinda ramble on and I should sleep more but why sleep when I do nothing important while I sleep. This long run on sentence is brought to you by the testing of wrapping text."
           },
           {
           	userID: "2",

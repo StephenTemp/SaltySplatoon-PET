@@ -97,6 +97,8 @@ const h4inlinestyle = {
 }
 	
 const textareastyle = {
+	'text-align': 'left',
+	'overflow-wrap': 'break-word',
 	'overflow-y': 'hidden',
 	width: '80%' 
 }
