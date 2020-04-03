@@ -56,20 +56,23 @@ class Reviews extends React.Component {
                     <p onClick = {() => this.handleCollapse(index)}>
                         <Container>
                             <Row>
+                            	<Col>
+                                    <h4 style={h4inlinestyle}>{ review.userID }</h4>
+                                </Col>
                                 <Col>
-                                    <h3 style={h3inlinestyle}>{ review.reviewerName }</h3>
+                                    <h4 style={h4inlinestyle}>{ review.reviewerLName }</h4>
+                                </Col>
+                                <Col>
+                                	<h4 style={h4inlinestyle}>{ review.reviewerFName }</h4>
                                 </Col>
                                 <Col>
                                     <h4 style={h4inlinestyle}>{ review.dateReviewed }</h4>
-                                </Col>
-                                <Col xs='auto'>
-                                    <Button onClick = {(e) => {this.handleRejectReview(e, index)}} color = "danger">Reject Review</Button>
                                 </Col>
                             </Row>
                         </Container>
                     </p>
                     <Collapse isOpen={this.state.reviews[index].collapsed}>
-                        <textarea id='textarea' style={textareastyle} name='textarea' rows='10' onChange={(e)=>{this.handleTextChange(e,index)}}></textarea>
+                        <p style={textareastyle}>{ review.content }</p>
                     </Collapse>
                 </p>
             </Container>
@@ -90,7 +93,7 @@ const h3inlinestyle = {
 }
 
 const h4inlinestyle = {
-	'text-align': 'right',
+	'text-align': 'center',
 }
 	
 const textareastyle = {

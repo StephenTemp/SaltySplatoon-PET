@@ -10,19 +10,25 @@ class ViewReviews extends React.Component {
         let fakeReviewPeople = ["P1", "P2", "P3", "P4"]
         let fakeReviews = [
           {
-            reviewerName: "Person 1",
+          	userID: "1",
+            reviewerLName: "Last Name 1",
+            reviewerFName: "First Name 1",
             dateReviewed: "March 31",
-            content: ""
+            content: "This is a review 1"
           },
           {
-            reviewerName: "Person 2",
+          	userID: "2",
+            reviewerLName: "Last Name 2",
+            reviewerFName: "First Name 2",
             dateReviewed: "March 31",
-            content: ""
+            content: "This is a review 2"
           },
           {
-            reviewerName: "Person 2",
+          	userID: "3",
+            reviewerLName: "Last Name 3",
+            reviewerFName: "First Name 3",
             dateReviewed: "March 31",
-            content: ""
+            content: "This is a review 3"
           }
         ]
 
