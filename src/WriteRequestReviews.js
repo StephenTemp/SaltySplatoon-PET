@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { Component } from 'react'
 import './App.css';
-import Request from './Requests'
+import Request from './Requests';
+import Select from 'react-select';
 
 class WriteRequestReviews extends React.Component {
-    
+
     constructor(props) {
         super(props);
         let fakeRequestPeople = ["Alexandru M", "Alex Zhou", "Stephen", "Sam"]
+        fakeRequestPeople = fakeRequestPeople.map(x => {
+          return ({value : x, label : x});
+        })
+
         let fakeRequests = [
           {
             requesterName: "Person 1",
@@ -41,7 +46,7 @@ class WriteRequestReviews extends React.Component {
         };
     }
 
-    
+
 
     componentDidMount(){
       this.setState({
@@ -58,7 +63,7 @@ class WriteRequestReviews extends React.Component {
     setThis() {
 
     }
-    
+
     render() {
       console.log(this.state.fakeRequests)
         return (
@@ -67,12 +72,14 @@ class WriteRequestReviews extends React.Component {
                 This is the WriteRequestReviews.js file. The number is {this.props.number1}.
             </p>
             <div className = "request-reviews">
-            
+            //searchbar feature goes here
+            <Select options={this.state.fakeRequestPeople} />
+
             </div>
             <div className = "write-reviews">
               <Request requests={ this.state.fakeRequests }/>
             </div>
-{/* 
+{/*
               <p>
                 This is the WriteRequestReviews.js file. The number is {this.props.number1}.
             </p>
