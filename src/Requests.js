@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import {Collapse, Container, Col, Row, Button} from 'reactstrap'
+import confirm from "./ConfirmModal";
 
 class Requests extends React.Component {
 
@@ -24,14 +25,25 @@ class Requests extends React.Component {
         })
     }
 
-    handleRejectReview(e, index) {
+    async handleRejectReview(e, index) {
         // Required for preventing collapse on button click
         e.stopPropagation();
-        let requestsCopy = [...this.state.requests];
-        requestsCopy.splice(index, 1);
-        this.setState({
-            requests: requestsCopy
-        })
+        if (await confirm(
+            "Confirm Request Removal", 
+            "Are you sure you want to reject this request from "+this.state.requests[index].requesterName+"?",
+            "danger",
+            "secondary",
+            "Yes",
+            "Cancel"
+            )) {
+            let requestsCopy = [...this.state.requests];
+            requestsCopy.splice(index, 1);
+            this.setState({
+                requests: requestsCopy
+            })
+        } else {
+            
+        }
     }
 
 
@@ -53,16 +65,42 @@ class Requests extends React.Component {
     }
 
     handleSaveReview(e, index){
-        var saveContent = document.getElementById('textarea').value
+        let saveContent = document.getElementById('textarea').value
         // this.setState({ requests: this.state.requests.map(request => {
 
         // }) })
-        var requestsCopy = [...this.state.requests];
+        let requestsCopy = [...this.state.requests];
         requestsCopy[index].content = saveContent;
         this.setState({ 
             requests: requestsCopy
-         })
+            })
         console.log(this.state.requests)
+    }
+
+    async handleSendReview(e, index){
+        if (await confirm(
+            "Confirm Send Review", 
+            "Are you sure you want to send this review? You will not be able to make changes after it is sent.",
+            "primary",
+            "secondary",
+            "Yes",
+            "Cancel"
+            )) {
+            // Save the review
+            let saveContent = document.getElementById('textarea').value
+            // this.setState({ requests: this.state.requests.map(request => {
+    
+            // }) })
+            let requestsCopy = [...this.state.requests];
+            requestsCopy[index].content = saveContent;
+            this.setState({ 
+                requests: requestsCopy
+                })
+            console.log(this.state.requests)
+            // TODO Send the review
+        } else {
+            
+        }
     }
 
     Hidden = (requesterName) => {
@@ -99,7 +137,7 @@ class Requests extends React.Component {
                         <p id='char_count' sytle={char_count_style} >{request.text_length_left}/5000</p>
                         <br></br>
                         <Button id='savebtn' color='success' onClick={(e) => (this.handleSaveReview(e, index))}>Save</Button>
-                        <Button id='sendreviewbtn'>Send Review</Button>
+                        <Button id='sendreviewbtn' onClick={(e) => (this.handleSendReview(e, index))}>Send Review</Button>
                     </Collapse>
                 </p>
             </Container>
