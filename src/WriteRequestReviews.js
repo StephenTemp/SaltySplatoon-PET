@@ -2,7 +2,7 @@ import React from 'react'
 import './App.css';
 import Request from './Requests';
 import Select from 'react-select';
-import {Container, Row, Col} from 'reactstrap'
+import {Container, Row, Col, Button} from 'reactstrap'
 
 class WriteRequestReviews extends React.Component {
 
@@ -48,6 +48,7 @@ class WriteRequestReviews extends React.Component {
           fakeRequests: fakeRequests,
           reviewer: "Reviewer 1"
         };
+        this.handleRequestReview = this.handleRequestReview.bind(this)
     }
 
 
@@ -64,8 +65,8 @@ class WriteRequestReviews extends React.Component {
       });
     }
 
-    setThis() {
-
+    handleRequestReview(){
+      
     }
 
     render() {
@@ -79,15 +80,19 @@ class WriteRequestReviews extends React.Component {
             //searchbar feature goes here
             <Container fluid='sm'>
               <Row>
-                <Col>
-                  <h3>Requests for Current User</h3>
+                <Col xs='auto'>
+                  <h3 style={{display: 'flex', justifyContent: 'left'}}>Requests for Current User</h3>
                 </Col>
-                <Col/>
-                <Col>
-                  <Select
-                    options={this.state.fakeRequestPeople}
-                    isMulti={true}
-                    placeholder={"Request Reviews"}/>
+                <Col></Col>
+                <Col></Col>
+                <Col xs='3'>
+                    <Select
+                      options={this.state.fakeRequestPeople}
+                      isMulti={true}
+                      placeholder={"Request Reviews"}/>
+                </Col>
+                <Col xs='2'>
+                  <Button color = {'primary'} onClick = {() => this.handleRequestReview}>Request Reviews</Button>
                 </Col>
               </Row>
             </Container>
