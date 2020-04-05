@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './App.css';
 import Request from './Requests';
 import Select from 'react-select';
+import {Container, Row, Col} from 'reactstrap'
 
 class WriteRequestReviews extends React.Component {
 
@@ -73,8 +74,20 @@ class WriteRequestReviews extends React.Component {
             </p>
             <div className = "request-reviews">
             //searchbar feature goes here
-            <Select options={this.state.fakeRequestPeople} />
-
+            <Container fluid='sm'>
+              <Row>
+                <Col>
+                  <h3>Requests for Current User</h3>
+                </Col>
+                <Col/>
+                <Col>
+                  <Select
+                    options={this.state.fakeRequestPeople}
+                    isMulti={true}
+                    placeholder={"Request Reviews"}/>
+                </Col>
+              </Row>
+            </Container>
             </div>
             <div className = "write-reviews">
               <Request requests={ this.state.fakeRequests }/>
