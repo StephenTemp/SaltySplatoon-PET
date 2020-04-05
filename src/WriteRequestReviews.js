@@ -18,19 +18,22 @@ class WriteRequestReviews extends React.Component {
             requesterName: "Person 1",
             dateRequested: "March 31",
             content: "",
-            text_length_left: 0
+            text_length_left: 0,
+            saved_at_time: ''
           },
           {
             requesterName: "Person 2",
             dateRequested: "March 31",
             content: "",
-            text_length_left: 0
+            text_length_left: 0,
+            saved_at_time: ''
           },
           {
             requesterName: "Person 3",
             dateRequested: "March 31",
             content: "",
-            text_length_left: 0
+            text_length_left: 0,
+            saved_at_time: ''
           }
         ]
 
