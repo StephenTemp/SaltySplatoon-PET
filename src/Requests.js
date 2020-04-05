@@ -140,7 +140,7 @@ class Requests extends React.Component {
                         <p style={{display: 'flex', justifyContent: 'flex-end', margin:'5px', marginRight: '15px'}}>
                             <i id='savedat' style={{position:'relative', right:'62%'}}>saved at {request.saved_at_time}</i>
                             <Button id='savebtn' style={{marginRight: '10px'}} color='secondary' onClick={(e) => (this.handleSaveReview(e, index))}>Save</Button>
-                            <Button id='sendreviewbtn' color='success'>Send Review</Button>
+                            <Button id='sendreviewbtn' color='success' onClick={(e) => (this.handleSendReview(e, index))}>Send Review</Button>
                         </p>
                     </Collapse>
                 </p>
