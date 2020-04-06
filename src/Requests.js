@@ -36,10 +36,9 @@ class Requests extends React.Component {
             "Yes",
             "Cancel"
             )) {
-            let requestsCopy = [...this.state.requests];
-            requestsCopy.splice(index, 1);
+            delete this.state.requests[index];
             this.setState({
-                requests: requestsCopy
+                requests: this.state.requests
             })
         } else {
             
@@ -115,7 +114,7 @@ class Requests extends React.Component {
 
     render() {
         //console.log(this.props.todos)
-        return this.state.requests.map((request, index) => (
+        return <div key={'key'}>{this.state.requests.map((request, index) => (request ? 
             <Container fluid='sm'>
                 <p style={requeststyle}>
                     <p onClick = {() => this.handleCollapse(index)}>
@@ -145,7 +144,7 @@ class Requests extends React.Component {
                     </Collapse>
                 </p>
             </Container>
-        ));
+        : ""))}</div>;
     }
 }
 
