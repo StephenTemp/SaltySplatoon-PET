@@ -91,12 +91,10 @@ class Requests extends React.Component {
             // this.setState({ requests: this.state.requests.map(request => {
     
             // }) })
-            let requestsCopy = [...this.state.requests];
-            requestsCopy[index].content = saveContent;
-            this.setState({ 
-                requests: requestsCopy
-                })
-            console.log(this.state.requests)
+            delete this.state.requests[index];
+            this.setState({
+                requests: this.state.requests
+            })
             // TODO Send the review
         } else {
             
