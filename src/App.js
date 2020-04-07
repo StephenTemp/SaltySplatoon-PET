@@ -18,6 +18,10 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {currentTime: 0};
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount(){
     this.setState({
       currentTime: 0
     });
@@ -27,9 +31,8 @@ class App extends React.Component {
         currentTime: data.time,
       });
     });
-
-    this.handleClick = this.handleClick.bind(this);
   }
+
 
   handleClick(thing) {
     console.log(thing);
@@ -74,7 +77,7 @@ class App extends React.Component {
             <ViewReviews />
           </Route>
           <Route path="/writerequestreviews">
-            <WriteRequestReviews />
+            <WriteRequestReviews number1={25}/>
           </Route>
         </Switch>
       </div>
