@@ -31,6 +31,7 @@ class ConfirmModal extends React.Component {
                     </ModalBody>
                     <ModalFooter>
                     <Button 
+                        hidden={cancelLabel?false:true}
                         color={cancelColor}
                         onClick={() => {proceed(false); this.setState({isOpen: false})}}>
                             {cancelLabel}

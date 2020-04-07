@@ -3,6 +3,7 @@ import './App.css';
 import Request from './Requests';
 import Select from 'react-select';
 import {Container, Row, Col, Button} from 'reactstrap'
+import confirm from "./ConfirmModal";
 
 class WriteRequestReviews extends React.Component {
 
@@ -46,9 +47,12 @@ class WriteRequestReviews extends React.Component {
           currentTime: 0,
           fakeRequestPeople: fakeRequestPeople,
           fakeRequests: fakeRequests,
-          reviewer: "Reviewer 1"
+          reviewer: "Reviewer 1",
+          requestsValue: [],
+          selectedRequestReviewers: []
         };
         this.handleRequestReview = this.handleRequestReview.bind(this)
+        this.handleRequestChange = this.handleRequestChange.bind(this)
     }
 
 
@@ -61,16 +65,49 @@ class WriteRequestReviews extends React.Component {
       fetch('/time').then(res => res.json()).then(data => {
         this.setState({
           currentTime: data.time,
+          selectedRequestReviewers: [],
         });
       });
     }
 
-    handleRequestReview(){
-      
+    handleRequestChange(selectedOptions){
+      console.log("Current requests: ", selectedOptions)
+      this.setState({
+        selectedRequestReviewers: selectedOptions,
+        requestsValue: selectedOptions
+      })
+    }
+
+    async handleRequestReview(selectedOptions){
+      console.log(this.state.selectedRequestReviewers)
+      let numPeople = this.state.selectedRequestReviewers.length;
+      let peopleStr = "";
+      for (let i=0;i<numPeople;i++) {
+        if (i>0)
+          peopleStr+=", "
+        if (i>0 && i== numPeople-1)
+          peopleStr+="and "
+        peopleStr+=this.state.selectedRequestReviewers[i].label
+      }
+      if (await confirm(
+        "Confirm Request Reviews", 
+        numPeople>0 ? "Are you sure you want to request reviews from "+peopleStr+"?":"You have not selected anybody to request reviews from.",
+        "primary",
+        "secondary",
+        numPeople>0?"Yes":"Okay",
+        numPeople>0?"Cancel":null
+        )) {
+          this.setState({
+            selectedRequestReviewers: [],
+            requestsValue: []
+          })
+        } else {
+            
+        }
     }
 
     render() {
-      console.log(this.state.fakeRequests)
+      // console.log(this.state.fakeRequests)
         return (
           <div className="App">
             <p>
@@ -89,10 +126,12 @@ class WriteRequestReviews extends React.Component {
                     <Select
                       options={this.state.fakeRequestPeople}
                       isMulti={true}
+                      value={this.state.requestsValue}
+                      onChange={(selectedOptions) => this.handleRequestChange(selectedOptions)}
                       placeholder={"Request Reviews"}/>
                 </Col>
                 <Col xs='2'>
-                  <Button color = {'primary'} onClick = {() => this.handleRequestReview}>Request Reviews</Button>
+                  <Button color = {'primary'} onClick = {(selectedOptions) => this.handleRequestReview(selectedOptions)}>Request Reviews</Button>
                 </Col>
               </Row>
             </Container>
