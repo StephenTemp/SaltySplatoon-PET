@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+p#char_count {
+  position: relative;
+  left: 85%;
+  float: left;
+  top: 210px;
+  color: grey;
+}
+
+button#savebtn {
+  
+}

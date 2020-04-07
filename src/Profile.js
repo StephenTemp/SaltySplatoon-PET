@@ -7,9 +7,6 @@ class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {currentTime: 0};
-        this.setState({
-          currentTime: 0
-        });
     
         fetch('/time').then(res => res.json()).then(data => {
           this.setState({
