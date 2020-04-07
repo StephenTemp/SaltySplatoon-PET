@@ -80,7 +80,7 @@ class WriteRequestReviews extends React.Component {
 
     async handleRequestReview(selectedOptions){
       console.log(this.state.selectedRequestReviewers)
-      let numPeople = this.state.selectedRequestReviewers.length;
+      let numPeople = this.state.selectedRequestReviewers?this.state.selectedRequestReviewers.length:0;
       let peopleStr = "";
       for (let i=0;i<numPeople;i++) {
         if (i>0)
@@ -110,11 +110,7 @@ class WriteRequestReviews extends React.Component {
       // console.log(this.state.fakeRequests)
         return (
           <div className="App">
-            <p>
-                This is the WriteRequestReviews.js file. The number is {this.props.number1}.
-            </p>
             <div className = "request-reviews">
-            //searchbar feature goes here
             <Container fluid='sm'>
               <Row>
                 <Col xs='auto'>

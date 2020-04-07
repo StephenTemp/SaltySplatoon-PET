@@ -65,9 +65,6 @@ class ViewReviews extends React.Component {
       console.log(this.state.fakeReviews)
         return (
           <div className="App">
-            <p>
-                This is the ViewReviews.js file. The number is {this.props.number1}.
-            </p>
             <Container>
               <Row>
                 <Col>userID</Col>
