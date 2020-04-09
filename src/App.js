@@ -11,6 +11,7 @@ import Home from './Home'
 import Profile from './Profile'
 import ViewReviews from './ViewReviews'
 import WriteRequestReviews from './WriteRequestReviews'
+//import './components/layouts/Header.css'
 
 
 class App extends React.Component {
@@ -41,19 +42,18 @@ class App extends React.Component {
       <div>
         <ul>
           <li>
-            <Link to="/">Home</Link>
+            <Link id='homebtn' color='primary' to="/">Home</Link>
           </li>
           <li>
-            <Link to="/profile">Profile</Link>
+            <Link id='profilebtn' to="/profile">Profile</Link>
           </li>
           <li>
-            <Link to="/viewreviews">View Reviews</Link>
+            <Link id='viewbtn' to="/viewreviews">View Reviews</Link>
           </li>
           <li>
-            <Link to="/writerequestreviews">Write Request Reviews</Link>
+            <Link id='writebtn' to="/writerequestreviews">Write Request Reviews</Link>
           </li>
         </ul>
-
         <hr />
 
         {/*
