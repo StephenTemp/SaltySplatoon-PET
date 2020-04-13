@@ -5,6 +5,8 @@ from flask_jwt_extended import (
     get_jwt_identity
 )
 
+import review_page
+
 app = Flask(__name__)
 
 # Setup the Flask-JWT-Extended extension
@@ -56,6 +58,9 @@ def validate_username_and_password(username, password):
     else:
         return username
 
+@app.route('/get-reviews', methods=['POST'])
+def get_reviews():
+    return review_page.get_reviews(get_jwt_identity())
 
 @app.route('/time')
 def get_current_time():
