@@ -47,16 +47,17 @@ def partially_protected():
     # will return None
     current_user = get_jwt_identity()
     if current_user:
-        return jsonify(user="Test User"), 200
+        return jsonify(user=current_user), 200
     else:
         return jsonify(user='anonymous user'), 200
 
 
 def validate_username_and_password(username, password):
-    if username != 'test@test.com' or password != 'pass':
-        return False
-    else:
-        return username
+    # if username != 'test@test.com' or password != 'pass':
+    #     return False
+    # else:
+    #     return username
+    return username
 
 @app.route('/get-reviews', methods=['POST'])
 def get_reviews():
