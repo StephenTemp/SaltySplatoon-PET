@@ -28,7 +28,7 @@ class App extends React.Component {
       currentTime: 0,
       logInToken: "",
       email: "",
-      password: "",
+      password: "123",
       name: ""
     };
     // this.submitForm = this.submitForm.bind(this);
@@ -147,6 +147,7 @@ class App extends React.Component {
               <Input
                 type="password"
                 name="password"
+                value="123"
                 id="examplePassword"
                 placeholder="********"
                 onChange={ (e) => this.handleChange(e) }
