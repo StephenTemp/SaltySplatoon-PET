@@ -69,6 +69,11 @@ def get_reviews():
 def get_possible_reviews():
     return request_write_page.get_possible_reviewers(get_jwt_identity())
 
+@app.route('/send-review-requests', methods=['POST'])
+@jwt_optional
+def send_review_requests():
+    return request_write_page.send_review_requests(get_jwt_identity(), request.get_json())
+
 @app.route('/time')
 def get_current_time():
     print("time started")

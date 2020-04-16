@@ -86,12 +86,14 @@ class WriteRequestReviews extends React.Component {
       console.log(this.state.selectedRequestReviewers)
       let numPeople = this.state.selectedRequestReviewers?this.state.selectedRequestReviewers.length:0;
       let peopleStr = "";
+      let requestEmails = []
       for (let i=0;i<numPeople;i++) {
         if (i>0)
           peopleStr+=", "
         if (i>0 && i== numPeople-1)
           peopleStr+="and "
         peopleStr+=this.state.selectedRequestReviewers[i].label
+        requestEmails.push(this.state.selectedRequestReviewers[i].value)
       }
       if (await confirm(
         "Confirm Request Reviews", 
@@ -101,6 +103,19 @@ class WriteRequestReviews extends React.Component {
         numPeople>0?"Yes":"Okay",
         numPeople>0?"Cancel":null
         )) {
+          const requestOptions = {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + this.state.logInToken, 'Content-Type': 'application/json' },
+            body: JSON.stringify({reviewer_emails: requestEmails})
+          };
+          fetch('/send-review-requests', requestOptions)
+            .then(response => response.json())
+            .then(data =>
+              this.setState({
+                
+              }
+            )
+          );
           this.setState({
             selectedRequestReviewers: [],
             requestsValue: []
