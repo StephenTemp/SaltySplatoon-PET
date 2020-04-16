@@ -44,7 +44,8 @@ class WriteRequestReviews extends React.Component {
         });
 
         this.state = {
-          currentTime: 0,
+          logInToken: this.props.logInToken,
+          requestPeople: [],
           fakeRequestPeople: fakeRequestPeople,
           fakeRequests: fakeRequests,
           reviewer: "Reviewer 1",
@@ -58,16 +59,19 @@ class WriteRequestReviews extends React.Component {
 
 
     componentDidMount(){
-      this.setState({
-        currentTime: 5
-      });
-      console.log(this.state.currentTime)
-      fetch('/time').then(res => res.json()).then(data => {
-        this.setState({
-          currentTime: data.time,
-          selectedRequestReviewers: [],
-        });
-      });
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + this.state.logInToken, 'Content-Type': 'application/json' },
+        body: JSON.stringify({  })
+      };
+      fetch('/get-possible-reviewers', requestOptions)
+        .then(response => response.json())
+        .then(data =>
+          this.setState({
+            requestPeople: data.possible_reviewers,
+          }
+        )
+      );
     }
 
     handleRequestChange(selectedOptions){
@@ -120,7 +124,7 @@ class WriteRequestReviews extends React.Component {
                 <Col></Col>
                 <Col xs='3'>
                     <Select
-                      options={this.state.fakeRequestPeople}
+                      options={this.state.requestPeople}
                       isMulti={true}
                       value={this.state.requestsValue}
                       onChange={(selectedOptions) => this.handleRequestChange(selectedOptions)}

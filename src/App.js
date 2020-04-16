@@ -122,7 +122,7 @@ class App extends React.Component {
               <ViewReviews />
             </Route>
             <Route path="/writerequestreviews">
-              <WriteRequestReviews number1={25}/>
+              <WriteRequestReviews logInToken={this.state.logInToken}/>
             </Route>
           </Switch>)
         : 

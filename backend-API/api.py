@@ -6,6 +6,7 @@ from flask_jwt_extended import (
 )
 
 import review_page
+import request_write_page
 
 app = Flask(__name__)
 
@@ -62,6 +63,11 @@ def validate_username_and_password(username, password):
 @app.route('/get-reviews', methods=['POST'])
 def get_reviews():
     return review_page.get_reviews(get_jwt_identity())
+
+@app.route('/get-possible-reviewers', methods=['POST'])
+@jwt_optional
+def get_possible_reviews():
+    return request_write_page.get_possible_reviewers(get_jwt_identity())
 
 @app.route('/time')
 def get_current_time():
