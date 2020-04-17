@@ -25,6 +25,20 @@ class Requests extends React.Component {
         })
     }
 
+    // componentDidMount(){
+    //     console.log("props")
+    //     this.setState({
+    //         requests: this.props.requests
+    //     }) 
+    //     console.log(this.props.requests)
+    // }
+
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            requests: nextProps.requests
+        })
+    }
+
     async handleRejectReview(e, index) {
         // Required for preventing collapse on button click
         e.stopPropagation();
@@ -110,22 +124,32 @@ class Requests extends React.Component {
         }
     }
 
+    // showSimpleDateFormat() {
+    //     var simpleDate = this.props.requests.date.split(" ")
+    //     var stringDate = simpleDate.slice(0, 3)
+    //     return stringDate
+    // }
+
     render() {
-        //console.log(this.props.todos)
+        console.log("state")
+        console.log(this.state.requests)
+        console.log(this.props.requests)
+        console.log("state end")
         return <div key={'key'}>{this.state.requests.map((request, index) => (request ? 
+        // return <div key={'key'}>{this.props.requests.map((request, index) => (request ?
             <Container fluid='sm'>
                 <p style={requeststyle}>
                     <p onClick = {() => this.handleCollapse(index)}>
                         <Container>
                             <Row>
                                 <Col>
-                                    <h3 style={h3inlinestyle}>{ request.requesterName }</h3>
+                                    <h3 style={h3inlinestyle}>{ request.requester }</h3>
                                 </Col>
                                 <Col>
-                                    <h4 style={h4inlinestyle}>{ request.dateRequested }</h4>
+                                    <h4 style={h4inlinestyle}>{ request.date.split(" ")[0]+" "+request.date.split(" ")[1]+" "+request.date.split(" ")[2] }</h4>
                                 </Col>
                                 <Col xs='auto'>
-                                    <Button onClick = {(e) => {this.handleRejectReview(e, index)}} color = "danger">Reject Request</Button>
+                                    <Button onClick = {(e) => {this.handleRejectReview(e, index)}} color = "dark">Reject Request</Button>
                                 </Col>
                             </Row>
                         </Container>
@@ -149,21 +173,21 @@ class Requests extends React.Component {
 const requeststyle = {
     margin: '15px',
     padding: '15px',
-	'background-color': '#FFF',
-	'border-radius': '8px',
-	'box-shadow': '0px 0px 10px rgba(0, 0, 0, 0.2)'
+	'backgroundColor': '#FFF',
+	'borderRadius': '8px',
+	'boxShadow': '0px 0px 10px rgba(0, 0, 0, 0.2)'
 }
 
 const h3inlinestyle = {
-    'text-align': 'left',
+    'textAlign': 'left',
 }
 
 const h4inlinestyle = {
-    'text-align': 'right',
+    'textAlign': 'right',
 }
 
 const textareastyle = {
-    'overflow-y': 'hidden',
+    'overflowY': 'hidden',
     width: '80%' 
 }
 
