@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css';
-import Request from './Requests';
+import Requests from './Requests';
 import Select from 'react-select';
 import {Container, Row, Col, Button} from 'reactstrap'
 import confirm from "./ConfirmModal";
@@ -46,6 +46,7 @@ class WriteRequestReviews extends React.Component {
         this.state = {
           logInToken: this.props.logInToken,
           requestPeople: [],
+          requestedReviews: [],
           fakeRequestPeople: fakeRequestPeople,
           fakeRequests: fakeRequests,
           reviewer: "Reviewer 1",
@@ -69,6 +70,14 @@ class WriteRequestReviews extends React.Component {
         .then(data =>
           this.setState({
             requestPeople: data.possible_reviewers,
+          }
+        )
+      );
+      fetch('/get_requested_reviews', requestOptions)
+        .then(response => response.json())
+        .then(data =>
+          this.setState({
+            requestedReviews: data.requestes_list,
           }
         )
       );
@@ -126,14 +135,16 @@ class WriteRequestReviews extends React.Component {
     }
 
     render() {
-      // console.log(this.state.fakeRequests)
+      console.log("write start")
+      console.log(this.state.requestedReviews)
+      console.log("write end")
         return (
           <div className="App">
             <div className = "request-reviews">
             <Container fluid='sm'>
               <Row>
                 <Col xs='auto'>
-                  <h3 style={{display: 'flex', justifyContent: 'left'}}>Requests for Current User</h3>
+                  <h3 style={{display: 'flex', justifyContent: 'left'}}>Requests for You</h3>
                 </Col>
                 <Col></Col>
                 <Col></Col>
@@ -152,7 +163,7 @@ class WriteRequestReviews extends React.Component {
             </Container>
             </div>
             <div className = "write-reviews">
-              <Request requests={ this.state.fakeRequests }/>
+              <Requests key={"key"} requests={ this.state.requestedReviews }/>
             </div>
 {/*
               <p>
