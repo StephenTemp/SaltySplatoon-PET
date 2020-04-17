@@ -15,7 +15,7 @@ def get_possible_reviewers(email):
 
     # Check if they have a manager
     # Only the CEO should not have a manager
-    print(current_employee)
+    print('---------:',current_employee)
     if current_employee["managerId"]:
         companyId = current_employee["companyId"]
         managerId = current_employee["managerId"]
@@ -65,3 +65,26 @@ def send_review_requests(email, json):
 
     # Returns just a 200 response which means the request was successful
     return jsonify(), 200
+
+def get_requested_reviews(email):
+    # find database "PET"
+    PET_db = client["PET"] 
+
+    # find collection "employee_data"
+    employee_data = PET_db["employee_data"]
+    current_employee = employee_data.find_one({"email": email}) # find one data that email == current email
+    
+    requests = PET_db["requests"] # find collection "requests"
+
+    requestes_list = [] # initial the return list
+
+    cur_employee_id = current_employee["employeeId"] 
+    cur_employee_company_id = current_employee["companyId"]
+
+    for employee in requests.find({"reviewer_id": cur_employee_id, "companyId": cur_employee_company_id}): # find all data that reviewer is current user
+        cur_requester = employee_data.find_one({"employeeId": employee["requester_id"]}) # find current requester's data from "employee_data".
+        cur_requester_name = cur_requester["firstName"] + " " + cur_requester["lastName"] # get cureent requester's name.
+        requestes_list.append({"requester": cur_requester_name, "date": employee["date"], "review_content_id": str(employee["review_content_id"]), "request_id": str(employee["_id"])}) # push requester's name, request's date, review_content_id and current request id to return list. 
+
+    # Returns just a 200 response which means the request was successful
+    return jsonify(requestes_list=requestes_list), 200
