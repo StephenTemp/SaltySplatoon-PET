@@ -87,21 +87,24 @@ class App extends React.Component {
         <p>
           Token: {this.state.logInToken}
         </p>
-        <ul>
+        <header>
+          <ul>
           <li>
-            <Link id='homebtn' color='primary' to="/">Home</Link>
+            <Link className='navBtn' id='homebtn' color='primary' to="/">Home</Link>
           </li>
           <li>
-            <Link id='profilebtn' to="/profile">Profile</Link>
+            <Link className='navBtn' id='profilebtn' to="/profile">Profile</Link>
           </li>
           <li>
-            <Link id='viewbtn' to="/viewreviews">View Reviews</Link>
+            <Link className='navBtn' id='viewbtn' to="/viewreviews">View Reviews</Link>
           </li>
           <li>
-            <Link id='writebtn' to="/writerequestreviews">Write Request Reviews</Link>
+            <Link className='navBtn' id='writebtn' to="/writerequestreviews">Write Request Reviews</Link>
           </li>
         </ul>
         <hr />
+        </header>
+        
 
         {/*
           A <Switch> looks through all its children <Route>
