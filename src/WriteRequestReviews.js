@@ -1,7 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 import './App.css';
-import Request from './Requests';
+import Requests from './Requests';
 import Select from 'react-select';
+import {Container, Row, Col, Button} from 'reactstrap'
+import confirm from "./ConfirmModal";
 
 class WriteRequestReviews extends React.Component {
 
@@ -17,19 +19,22 @@ class WriteRequestReviews extends React.Component {
             requesterName: "Person 1",
             dateRequested: "March 31",
             content: "",
-            text_length_left: 0
+            text_length_left: 0,
+            saved_at_time: ''
           },
           {
             requesterName: "Person 2",
             dateRequested: "March 31",
             content: "",
-            text_length_left: 0
+            text_length_left: 0,
+            saved_at_time: ''
           },
           {
             requesterName: "Person 3",
             dateRequested: "March 31",
             content: "",
-            text_length_left: 0
+            text_length_left: 0,
+            saved_at_time: ''
           }
         ]
 
@@ -39,45 +44,126 @@ class WriteRequestReviews extends React.Component {
         });
 
         this.state = {
-          currentTime: 0,
+          logInToken: this.props.logInToken,
+          requestPeople: [],
+          requestedReviews: [],
           fakeRequestPeople: fakeRequestPeople,
           fakeRequests: fakeRequests,
-          reviewer: "Reviewer 1"
+          reviewer: "Reviewer 1",
+          requestsValue: [],
+          selectedRequestReviewers: []
         };
+        this.handleRequestReview = this.handleRequestReview.bind(this)
+        this.handleRequestChange = this.handleRequestChange.bind(this)
     }
 
 
 
     componentDidMount(){
-      this.setState({
-        currentTime: 5
-      });
-      console.log(this.state.currentTime)
-      fetch('/time').then(res => res.json()).then(data => {
-        this.setState({
-          currentTime: data.time,
-        });
-      });
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + this.state.logInToken, 'Content-Type': 'application/json' },
+        body: JSON.stringify({  })
+      };
+      fetch('/get-possible-reviewers', requestOptions)
+        .then(response => response.json())
+        .then(data =>
+          this.setState({
+            requestPeople: data.possible_reviewers,
+          }
+        )
+      );
+      fetch('/get_requested_reviews', requestOptions)
+        .then(response => response.json())
+        .then(data =>
+          this.setState({
+            requestedReviews: data.requestes_list,
+          }
+        )
+      );
     }
 
-    setThis() {
+    handleRequestChange(selectedOptions){
+      console.log("Current requests: ", selectedOptions)
+      this.setState({
+        selectedRequestReviewers: selectedOptions,
+        requestsValue: selectedOptions
+      })
+    }
 
+    async handleRequestReview(selectedOptions){
+      console.log(this.state.selectedRequestReviewers)
+      let numPeople = this.state.selectedRequestReviewers?this.state.selectedRequestReviewers.length:0;
+      let peopleStr = "";
+      let requestEmails = []
+      for (let i=0;i<numPeople;i++) {
+        if (i>0)
+          peopleStr+=", "
+        if (i>0 && i== numPeople-1)
+          peopleStr+="and "
+        peopleStr+=this.state.selectedRequestReviewers[i].label
+        requestEmails.push(this.state.selectedRequestReviewers[i].value)
+      }
+      if (await confirm(
+        "Confirm Request Reviews", 
+        numPeople>0 ? "Are you sure you want to request reviews from "+peopleStr+"?":"You have not selected anybody to request reviews from.",
+        "primary",
+        "secondary",
+        numPeople>0?"Yes":"Okay",
+        numPeople>0?"Cancel":null
+        )) {
+          const requestOptions = {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + this.state.logInToken, 'Content-Type': 'application/json' },
+            body: JSON.stringify({reviewer_emails: requestEmails})
+          };
+          fetch('/send-review-requests', requestOptions)
+            .then(response => response.json())
+            .then(data =>
+              this.setState({
+                
+              }
+            )
+          );
+          this.setState({
+            selectedRequestReviewers: [],
+            requestsValue: []
+          })
+        } else {
+            
+        }
     }
 
     render() {
-      console.log(this.state.fakeRequests)
+      console.log("write start")
+      console.log(this.state.requestedReviews)
+      console.log("write end")
         return (
           <div className="App">
-            <p>
-                This is the WriteRequestReviews.js file. The number is {this.props.number1}.
-            </p>
             <div className = "request-reviews">
-            //searchbar feature goes here
-            <Select options={this.state.fakeRequestPeople} />
-
+            <Container fluid='sm'>
+              <Row>
+                <Col xs='auto'>
+                  <h3 style={{display: 'flex', justifyContent: 'left'}}>Requests for You</h3>
+                </Col>
+                <Col></Col>
+                <Col></Col>
+                <Col xs='3'>
+                    <Select
+                      options={this.state.requestPeople}
+                      isMulti={true}
+                      value={this.state.requestsValue}
+                      onChange={(selectedOptions) => this.handleRequestChange(selectedOptions)}
+                      placeholder={"Request Reviews"}/>
+                </Col>
+                <Col xs='2'>
+                  <Button color = {'primary'} onClick = {(selectedOptions) => this.handleRequestReview(selectedOptions)}>Request Reviews</Button>
+                </Col>
+              </Row>
+            </Container>
             </div>
             <div className = "write-reviews">
-              <Request requests={ this.state.fakeRequests }/>
+              <Requests key={"key"} requests={ this.state.requestedReviews }/>
             </div>
 {/*
               <p>

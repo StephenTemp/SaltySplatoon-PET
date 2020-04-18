@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import {Collapse, Container, Col, Row, Button} from 'reactstrap'
+import confirm from "./ConfirmModal";
 
 class Requests extends React.Component {
 
@@ -24,14 +25,38 @@ class Requests extends React.Component {
         })
     }
 
-    handleRejectReview(e, index) {
+    // componentDidMount(){
+    //     console.log("props")
+    //     this.setState({
+    //         requests: this.props.requests
+    //     }) 
+    //     console.log(this.props.requests)
+    // }
+
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            requests: nextProps.requests
+        })
+    }
+
+    async handleRejectReview(e, index) {
         // Required for preventing collapse on button click
         e.stopPropagation();
-        let requestsCopy = [...this.state.requests];
-        requestsCopy.splice(index, 1);
-        this.setState({
-            requests: requestsCopy
-        })
+        if (await confirm(
+            "Confirm Request Removal", 
+            "Are you sure you want to reject this request from "+this.state.requests[index].requesterName+"?",
+            "danger",
+            "secondary",
+            "Yes",
+            "Cancel"
+            )) {
+            delete this.state.requests[index];
+            this.setState({
+                requests: this.state.requests
+            })
+        } else {
+            
+        }
     }
 
 
@@ -53,16 +78,41 @@ class Requests extends React.Component {
     }
 
     handleSaveReview(e, index){
-        var saveContent = document.getElementById('textarea').value
+        let saveContent = document.getElementById('textarea').value
         // this.setState({ requests: this.state.requests.map(request => {
 
         // }) })
-        var requestsCopy = [...this.state.requests];
+        let requestsCopy = [...this.state.requests];
         requestsCopy[index].content = saveContent;
+        requestsCopy[index].saved_at_time = new Date().toLocaleTimeString();
         this.setState({ 
             requests: requestsCopy
-         })
+            })
         console.log(this.state.requests)
+    }
+
+    async handleSendReview(e, index){
+        if (await confirm(
+            "Confirm Send Review", 
+            "Are you sure you want to send this review? You will not be able to make changes after it is sent.",
+            "primary",
+            "secondary",
+            "Yes",
+            "Cancel"
+            )) {
+            // Save the review
+            let saveContent = document.getElementById('textarea').value
+            // this.setState({ requests: this.state.requests.map(request => {
+    
+            // }) })
+            delete this.state.requests[index];
+            this.setState({
+                requests: this.state.requests
+            })
+            // TODO Send the review
+        } else {
+            
+        }
     }
 
     Hidden = (requesterName) => {
@@ -74,22 +124,32 @@ class Requests extends React.Component {
         }
     }
 
+    // showSimpleDateFormat() {
+    //     var simpleDate = this.props.requests.date.split(" ")
+    //     var stringDate = simpleDate.slice(0, 3)
+    //     return stringDate
+    // }
+
     render() {
-        //console.log(this.props.todos)
-        return this.state.requests.map((request, index) => (
+        console.log("state")
+        console.log(this.state.requests)
+        console.log(this.props.requests)
+        console.log("state end")
+        return <div key={'key'}>{this.state.requests.map((request, index) => (request ? 
+        // return <div key={'key'}>{this.props.requests.map((request, index) => (request ?
             <Container fluid='sm'>
                 <p style={requeststyle}>
                     <p onClick = {() => this.handleCollapse(index)}>
                         <Container>
                             <Row>
                                 <Col>
-                                    <h3 style={h3inlinestyle}>{ request.requesterName }</h3>
+                                    <h3 style={h3inlinestyle}>{ request.requester }</h3>
                                 </Col>
                                 <Col>
-                                    <h4 style={h4inlinestyle}>{ request.dateRequested }</h4>
+                                    <h4 style={h4inlinestyle}>{ request.date.split(" ")[0]+" "+request.date.split(" ")[1]+" "+request.date.split(" ")[2] }</h4>
                                 </Col>
                                 <Col xs='auto'>
-                                    <Button onClick = {(e) => {this.handleRejectReview(e, index)}} color = "danger">Reject Request</Button>
+                                    <Button onClick = {(e) => {this.handleRejectReview(e, index)}} color = "dark">Reject Request</Button>
                                 </Col>
                             </Row>
                         </Container>
@@ -98,33 +158,36 @@ class Requests extends React.Component {
                         <textarea id='textarea' style={textareastyle} name='textarea' rows='10' onChange={(e)=>{this.handleTextChange(e,index)}}></textarea>
                         <p id='char_count' sytle={char_count_style} >{request.text_length_left}/5000</p>
                         <br></br>
-                        <Button id='savebtn' color='success' onClick={(e) => (this.handleSaveReview(e, index))}>Save</Button>
-                        <Button id='sendreviewbtn'>Send Review</Button>
+                        <p style={{display: 'flex', justifyContent: 'flex-end', margin:'5px', marginRight: '15px'}}>
+                            <i id='savedat' style={{position:'relative', right:'62%'}}>saved at {request.saved_at_time}</i>
+                            <Button id='savebtn' style={{marginRight: '10px'}} color='secondary' onClick={(e) => (this.handleSaveReview(e, index))}>Save</Button>
+                            <Button id='sendreviewbtn' color='success' onClick={(e) => (this.handleSendReview(e, index))}>Send Review</Button>
+                        </p>
                     </Collapse>
                 </p>
             </Container>
-        ));
+        : ""))}</div>;
     }
 }
 
 const requeststyle = {
     margin: '15px',
     padding: '15px',
-	'background-color': '#FFF',
-	'border-radius': '8px',
-	'box-shadow': '0px 0px 10px rgba(0, 0, 0, 0.2)'
+	'backgroundColor': '#FFF',
+	'borderRadius': '8px',
+	'boxShadow': '0px 0px 10px rgba(0, 0, 0, 0.2)'
 }
 
 const h3inlinestyle = {
-    'text-align': 'left',
+    'textAlign': 'left',
 }
 
 const h4inlinestyle = {
-    'text-align': 'right',
+    'textAlign': 'right',
 }
 
 const textareastyle = {
-    'overflow-y': 'hidden',
+    'overflowY': 'hidden',
     width: '80%' 
 }
 

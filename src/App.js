@@ -7,17 +7,32 @@ import {
   Link
 } from "react-router-dom";
 
+import {
+  Container, Col, Form,
+  FormGroup, Label, Input,
+  Button,
+} from 'reactstrap';
+
 import Home from './Home'
 import Profile from './Profile'
 import ViewReviews from './ViewReviews'
 import WriteRequestReviews from './WriteRequestReviews'
+//import './components/layouts/Header.css'
 
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {currentTime: 0};
+    this.state = {
+      currentTime: 0,
+      logInToken: "",
+      email: "",
+      password: "123",
+      name: ""
+    };
+    // this.submitForm = this.submitForm.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -33,6 +48,33 @@ class App extends React.Component {
     });
   }
 
+  handleChange(event) {
+    const { target } = event;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const { name } = target;
+    this.setState({
+      [ name ]: value,
+    });
+  }
+
+  submitForm(e) {
+    e.preventDefault();
+    console.log(`Email: ${ this.state.email }`)
+    
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: this.state.email, password: this.state.password })
+    };
+    console.log(requestOptions)
+    fetch('/login', requestOptions)
+      .then(response => response.json())
+      .then(data =>
+        this.setState({
+          logInToken: data.access_token
+        })
+      );
+  }
 
   handleClick(thing) {
     console.log(thing);
@@ -42,22 +84,27 @@ class App extends React.Component {
     return (
       <Router>
       <div>
-        <ul>
+        <p>
+          Token: {this.state.logInToken}
+        </p>
+        <header>
+          <ul>
           <li>
-            <Link to="/">Home</Link>
+            <Link className='navBtn' id='homebtn' color='primary' to="/">Home</Link>
           </li>
           <li>
-            <Link to="/profile">Profile</Link>
+            <Link className='navBtn' id='profilebtn' to="/profile">Profile</Link>
           </li>
           <li>
-            <Link to="/viewreviews">View Reviews</Link>
+            <Link className='navBtn' id='viewbtn' to="/viewreviews">View Reviews</Link>
           </li>
           <li>
-            <Link to="/writerequestreviews">Write Request Reviews</Link>
+            <Link className='navBtn' id='writebtn' to="/writerequestreviews">Write Request Reviews</Link>
           </li>
         </ul>
-
         <hr />
+        </header>
+        
 
         {/*
           A <Switch> looks through all its children <Route>
@@ -66,20 +113,54 @@ class App extends React.Component {
           you have multiple routes, but you want only one
           of them to render at a time
         */}
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/profile">
-            <Profile />
-          </Route>
-          <Route path="/viewreviews">
-            <ViewReviews />
-          </Route>
-          <Route path="/writerequestreviews">
-            <WriteRequestReviews number1={25}/>
-          </Route>
-        </Switch>
+        {this.state.logInToken ? 
+          (<Switch>
+            <Route exact path="/">
+              <Home logInToken={this.state.logInToken}/>
+            </Route>
+            <Route path="/profile">
+              <Profile />
+            </Route>
+            <Route path="/viewreviews">
+              <ViewReviews />
+            </Route>
+            <Route path="/writerequestreviews">
+              <WriteRequestReviews logInToken={this.state.logInToken}/>
+            </Route>
+          </Switch>)
+        : 
+        <Container className="App">
+        <h2>Sign In(user=test@test.com, pass="pass")</h2>
+        <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
+          <Col>
+            <FormGroup>
+              <Label>Email</Label>
+              <Input
+                type="email"
+                name="email"
+                id="exampleEmail"
+                placeholder="myemail@email.com"
+                onChange={ (e) => this.handleChange(e) }
+              />
+            </FormGroup>
+          </Col>
+          <Col>
+            <FormGroup>
+              <Label for="examplePassword">Password</Label>
+              <Input
+                type="password"
+                name="password"
+                value="123"
+                id="examplePassword"
+                placeholder="********"
+                onChange={ (e) => this.handleChange(e) }
+              />
+            </FormGroup>
+          </Col>
+          <Button>Submit</Button>
+        </Form>
+      </Container>
+        }
       </div>
     </Router>
     );
