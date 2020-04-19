@@ -86,11 +86,13 @@ class ViewReviews extends React.Component {
             <div className="view-employees">
               <Container fluid='sm'>
                 <Row>
-                  <Col>
+                  <Col xs='auto'>
                     <h3 style={{display: 'flex', justifyContent: 'left'}}>Reviews for Current User</h3>
                   </Col>
                   <Col></Col>
-                  <Col></Col>
+                  <Col xs='2'>
+                    <Button color = {'primary'} onClick = {(selectedOptions) => this.handleViewEmployee(selectedOptions)}>My Reviews</Button>
+                  </Col>
                   <Col xs='3'>
                     <Select 
                       options={this.state.myEmployees}
@@ -98,6 +100,9 @@ class ViewReviews extends React.Component {
                       value={this.state.employeeValue}
                       onChange={(selectedOptions) => this.handleEmployeeChange(selectedOptions)}
                       placeholder={"View Employees"}/>
+                  </Col>
+                  <Col xs='2'>
+                    <Button color = {'primary'} onClick = {(selectedOptions) => this.handleViewEmployee(selectedOptions)}>Change Employee</Button>
                   </Col>
                 </Row>
               </Container>
