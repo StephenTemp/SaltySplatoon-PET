@@ -57,9 +57,8 @@ class Requests extends React.Component {
               const requestOptions = {
                 method: 'POST',
                 headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
-                body: JSON.stringify({"_id" : this.state.requests[index]['_id']})
+                body: JSON.stringify({"_id" : this.state.requests[index]['request_id']})
               };
-
               fetch('/reject_review', requestOptions)
                 .then(response => response.json())
                 .then(data =>
