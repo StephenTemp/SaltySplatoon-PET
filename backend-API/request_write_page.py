@@ -90,21 +90,22 @@ def get_requested_reviews(email):
     return jsonify(requestes_list=requestes_list), 200
 
 def reject_review(json):
-    print('I exist-------')
+    myclient = pymongo.MongoClient('mongodb://localhost:27017/');
 
     # get request id
     request_id = json['_id']
 
     # get database "PET"
-    PET_db = client["PET"]
+    PET_db = myclient["PET"]
 
     # get collection "requests"
     requests = PET_db["requests"]
 
     # get the request and set it to rejected/completed
-    cur_request = requests.find_one({"_id": request_id})
-    cur_request['rejected'] = True
-    cur_request['complete'] = True
+    rejected_query = {"_id" : request_id}
+    rejected_new = {"$set" : {"rejected": True}}
+    
+    requests.update_one(rejected_query, rejected_new)
 
     # Returns just a 200 response which means the request was successful
     return jsonify(), 200
