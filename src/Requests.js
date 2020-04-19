@@ -8,6 +8,7 @@ class Requests extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            logInToken: this.props.logInToken,
             requests: this.props.requests,
             c: true
         }
@@ -15,7 +16,7 @@ class Requests extends React.Component {
         this.handleRejectReview = this.handleRejectReview.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
     }
-    
+
     handleCollapse(index) {
         let requestsCopy = [...this.state.requests];
         console.log(requestsCopy);
@@ -29,7 +30,7 @@ class Requests extends React.Component {
     //     console.log("props")
     //     this.setState({
     //         requests: this.props.requests
-    //     }) 
+    //     })
     //     console.log(this.props.requests)
     // }
 
@@ -43,19 +44,39 @@ class Requests extends React.Component {
         // Required for preventing collapse on button click
         e.stopPropagation();
         if (await confirm(
-            "Confirm Request Removal", 
+            "Confirm Request Removal",
             "Are you sure you want to reject this request from "+this.state.requests[index].requesterName+"?",
             "danger",
             "secondary",
             "Yes",
             "Cancel"
             )) {
+
+              console.log("TEST-------------------")
+                //MESSING WITH THIS
+              const requestOptions = {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
+                body: JSON.stringify({"_id" : this.state.requests[index]['_id']})
+              };
+
+              fetch('/reject_review', requestOptions)
+                .then(response => response.json())
+                .then(data =>
+                  this.setState({
+
+                  }
+                )
+              );
+
             delete this.state.requests[index];
             this.setState({
                 requests: this.state.requests
             })
+
+
         } else {
-            
+
         }
     }
 
@@ -85,7 +106,7 @@ class Requests extends React.Component {
         let requestsCopy = [...this.state.requests];
         requestsCopy[index].content = saveContent;
         requestsCopy[index].saved_at_time = new Date().toLocaleTimeString();
-        this.setState({ 
+        this.setState({
             requests: requestsCopy
             })
         console.log(this.state.requests)
@@ -93,7 +114,7 @@ class Requests extends React.Component {
 
     async handleSendReview(e, index){
         if (await confirm(
-            "Confirm Send Review", 
+            "Confirm Send Review",
             "Are you sure you want to send this review? You will not be able to make changes after it is sent.",
             "primary",
             "secondary",
@@ -103,7 +124,7 @@ class Requests extends React.Component {
             // Save the review
             let saveContent = document.getElementById('textarea').value
             // this.setState({ requests: this.state.requests.map(request => {
-    
+
             // }) })
             delete this.state.requests[index];
             this.setState({
@@ -111,7 +132,7 @@ class Requests extends React.Component {
             })
             // TODO Send the review
         } else {
-            
+
         }
     }
 
@@ -135,7 +156,7 @@ class Requests extends React.Component {
         console.log(this.state.requests)
         console.log(this.props.requests)
         console.log("state end")
-        return <div key={'key'}>{this.state.requests.map((request, index) => (request ? 
+        return <div key={'key'}>{this.state.requests.map((request, index) => (request ?
         // return <div key={'key'}>{this.props.requests.map((request, index) => (request ?
             <Container fluid='sm'>
                 <p style={requeststyle}>
@@ -188,7 +209,7 @@ const h4inlinestyle = {
 
 const textareastyle = {
     'overflowY': 'hidden',
-    width: '80%' 
+    width: '80%'
 }
 
 const char_count_style = {

@@ -105,7 +105,7 @@ class WriteRequestReviews extends React.Component {
         requestEmails.push(this.state.selectedRequestReviewers[i].value)
       }
       if (await confirm(
-        "Confirm Request Reviews", 
+        "Confirm Request Reviews",
         numPeople>0 ? "Are you sure you want to request reviews from "+peopleStr+"?":"You have not selected anybody to request reviews from.",
         "primary",
         "secondary",
@@ -121,7 +121,7 @@ class WriteRequestReviews extends React.Component {
             .then(response => response.json())
             .then(data =>
               this.setState({
-                
+
               }
             )
           );
@@ -130,7 +130,7 @@ class WriteRequestReviews extends React.Component {
             requestsValue: []
           })
         } else {
-            
+
         }
     }
 
@@ -162,8 +162,8 @@ class WriteRequestReviews extends React.Component {
               </Row>
             </Container>
             </div>
-            <div className = "write-reviews">
-              <Requests key={"key"} requests={ this.state.requestedReviews }/>
+            <div className = "write-reviews">//edited
+              <Requests key={"key"} requests={ this.state.requestedReviews} logInToken={this.props.logInToken}/>
             </div>
 {/*
               <p>
