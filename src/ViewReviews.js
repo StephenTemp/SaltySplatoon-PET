@@ -1,13 +1,19 @@
 import React from 'react';
 import './App.css';
 import Review from './Reviews'
-import {Container, Row, Col} from 'reactstrap';
+import Select from 'react-select';
+import {Container, Row, Col, Button} from 'reactstrap';
 
 class ViewReviews extends React.Component {
     
     constructor(props) {
         super(props);
-        let fakeReviewPeople = ["P1", "P2", "P3", "P4"]
+        //let fakeReviewPeople = ["P1", "P2", "P3", "P4"]
+        let myEmployees = ["John Smith", "Walter White", "Big Cheese", "The Dude"]
+        myEmployees = myEmployees.map(x => {
+          return ({value : x, label : x});
+        })
+
         let fakeReviews = [
           {
           	userID: "1",
@@ -39,10 +45,14 @@ class ViewReviews extends React.Component {
 
         this.state = {
           currentTime: 0,
-          fakeReviewPeople: fakeReviewPeople,
+          myEmployees: myEmployees,
           fakeReviews: fakeReviews,
-          reviewer: "Reviewer 1"
+          reviewer: "Reviewer 1",
+          employeeValue: [],
+          selectedEmployee: []
         };
+        this.handleEmployeeChange = this.handleEmployeeChange.bind(this)
+        this.handleViewEmployee = this.handleViewEmployee.bind(this)
     }
 
     componentDidMount(){
@@ -57,15 +67,42 @@ class ViewReviews extends React.Component {
       });
     }
 
-    setThis() {
+    handleEmployeeChange(selectedOptions){
+      console.log("Current Employee: ", selectedOptions)
+      this.setState({
+        selectedEmployee: selectedOptions,
+        employeeValue: selectedOptions
+      })
+    }
 
+    async handleViewEmployee(selectedOptions){
+      console.log(this.state.selectedEmployee)
     }
 
     render() {
       console.log(this.state.fakeReviews)
         return (
           <div className="App">
-            <Container>
+            <div className="view-employees">
+              <Container fluid='sm'>
+                <Row>
+                  <Col>
+                    <h3 style={{display: 'flex', justifyContent: 'left'}}>Reviews for Current User</h3>
+                  </Col>
+                  <Col></Col>
+                  <Col></Col>
+                  <Col xs='3'>
+                    <Select 
+                      options={this.state.myEmployees}
+                      isMulti={false}
+                      value={this.state.employeeValue}
+                      onChange={(selectedOptions) => this.handleEmployeeChange(selectedOptions)}
+                      placeholder={"View Employees"}/>
+                  </Col>
+                </Row>
+              </Container>
+            </div>
+            <Container fluid='sm'>
               <Row>
                 <Col>userID</Col>
                 <Col>Coworker Last Name</Col>
