@@ -1,5 +1,6 @@
 import time
 from flask import Flask, jsonify, request
+from bson.objectid import ObjectId
 from flask_jwt_extended import (
     JWTManager, jwt_required, jwt_optional, create_access_token,
     get_jwt_identity
@@ -19,7 +20,7 @@ jwt = JWTManager(app)
 # it to the caller however you choose.
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    
+
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
 
@@ -31,7 +32,7 @@ def login():
         return jsonify({"msg": "Missing password parameter"}), 400
 
     possible_valid_credentials = validate_username_and_password(username, password)
-    
+
     if possible_valid_credentials:
         # Identity can be any data that is json serializable
         access_token = create_access_token(identity=username)
@@ -39,7 +40,7 @@ def login():
 
     else:
         return jsonify({"msg": "Bad username or password"}), 401
-    
+
 
 @app.route('/get-username', methods=['POST'])
 @jwt_optional
@@ -78,6 +79,12 @@ def send_review_requests():
 @jwt_optional
 def get_requested_reviews():
     return request_write_page.get_requested_reviews(get_jwt_identity())
+
+@app.route('/reject_review', methods=['POST'])
+@jwt_optional
+def reject_review(): #TODO
+    print("hello")
+    return request_write_page.reject_review({"_id": ObjectId(obj_id_to_find)})
 
 @app.route('/time')
 def get_current_time():

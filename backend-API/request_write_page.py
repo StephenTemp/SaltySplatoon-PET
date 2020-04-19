@@ -6,11 +6,11 @@ client = MongoClient('mongodb://localhost:27017/')
 
 def get_possible_reviewers(email):
     PET_db = client["PET"]
-    
+
     employee_data = PET_db["employee_data"]
     # Find the first employee with the same email as the current user
     current_employee = employee_data.find_one({"email": email})
-    
+
     possible_reviewers = []
 
     # Check if they have a manager
@@ -26,20 +26,20 @@ def get_possible_reviewers(email):
         for employee in employee_data.find({"managerId": managerId, "companyId": companyId}, { "_id": 0, "firstName": 1, "lastName": 1, "email": 1 }):
             if employee["email"] != current_employee["email"]:
                 possible_reviewers.append({"value": employee["email"], "label": employee["firstName"] + " " + employee["lastName"]})
-    
+
     # Returns the list of possible reviewers with a 200 response which means the request was successful
     return jsonify(possible_reviewers=possible_reviewers), 200
 
 def send_review_requests(email, json):
     PET_db = client["PET"]
-    
+
     employee_data = PET_db["employee_data"]
-    
+
     # Find the first employee with the same email as the current user
     current_employee = employee_data.find_one({"email": email})
-    
+
     review_content = PET_db["review_content"]
-    
+
     requests = PET_db["requests"]
 
     reviewer_emails = json["reviewer_emails"]
@@ -68,23 +68,43 @@ def send_review_requests(email, json):
 
 def get_requested_reviews(email):
     # find database "PET"
-    PET_db = client["PET"] 
+    PET_db = client["PET"]
 
     # find collection "employee_data"
     employee_data = PET_db["employee_data"]
     current_employee = employee_data.find_one({"email": email}) # find one data that email == current email
-    
+
     requests = PET_db["requests"] # find collection "requests"
 
     requestes_list = [] # initial the return list
 
-    cur_employee_id = current_employee["employeeId"] 
+    cur_employee_id = current_employee["employeeId"]
     cur_employee_company_id = current_employee["companyId"]
 
     for employee in requests.find({"reviewer_id": cur_employee_id, "companyId": cur_employee_company_id}): # find all data that reviewer is current user
         cur_requester = employee_data.find_one({"employeeId": employee["requester_id"]}) # find current requester's data from "employee_data".
         cur_requester_name = cur_requester["firstName"] + " " + cur_requester["lastName"] # get cureent requester's name.
-        requestes_list.append({"requester": cur_requester_name, "date": employee["date"], "review_content_id": str(employee["review_content_id"]), "request_id": str(employee["_id"])}) # push requester's name, request's date, review_content_id and current request id to return list. 
+        requestes_list.append({"requester": cur_requester_name, "date": employee["date"], "review_content_id": str(employee["review_content_id"]), "request_id": str(employee["_id"])}) # push requester's name, request's date, review_content_id and current request id to return list.
 
     # Returns just a 200 response which means the request was successful
     return jsonify(requestes_list=requestes_list), 200
+
+def reject_review(json):
+    print('I exist-------')
+
+    # get request id
+    request_id = json['_id']
+
+    # get database "PET"
+    PET_db = client["PET"]
+
+    # get collection "requests"
+    requests = PET_db["requests"]
+
+    # get the request and set it to rejected/completed
+    cur_request = requests.find_one({"_id": request_id})
+    cur_request['rejected'] = True
+    cur_request['complete'] = True
+
+    # Returns just a 200 response which means the request was successful
+    return jsonify(), 200
