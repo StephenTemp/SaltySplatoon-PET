@@ -10,7 +10,7 @@ import {
 import {
   Container, Col, Form,
   FormGroup, Label, Input,
-  Button,
+  Button, Row
 } from 'reactstrap';
 
 import Home from './Home'
@@ -83,14 +83,22 @@ class App extends React.Component {
   render() {
     return (
       <Router>
-      <div style={{"margin-top": "120px"}} >
+      <div style={{"margin-top": "90px"}} >
         { this.state.logInToken ? (
-        <header style={{"position": "fixed", "background": "#eeeeee", "width": "100%", "height": "90px", "margin-top": "-120px", "z-index": "1"}}>
-          <ul style={{"padding-top": "30px", "padding-bottom": "20px"}}>
-          <li>
-            <Link className='navBtn' id='homebtn' color='primary' to="/">Home</Link>
-          </li>
-          <li>
+        <header style={{"position": "fixed", "background": "#eeeeee", "width": "100%", "height": "60px", "margin-top": "-90px", "z-index": "1"}}>
+          <div style={{"padding-top": "10px", "padding-bottom": "10px"}}>
+          <Row style={{"padding-left": "30px"}}>
+            <Col>
+              <Button tag = {Link} id='homebtn' to="/">Home</Button>{" "}
+              <Button tag = {Link} id='profilebtn' to="/profile">Profile</Button>{" "}
+              <Button tag = {Link} id='viewbtn' to="/viewreviews">View Reviews</Button>{" "}
+              <Button tag = {Link} id='writebtn' to="/writerequestreviews">Write Request Reviews</Button>
+            </Col>
+            <div style={{"position": "absolute", "right": "0px", "padding-right": "30px"}}>
+              <Button tag = {Link} id='signout' to="/" onClick={() =>this.setState({logInToken: "", email: "", password: "123",})}>Sign Out</Button>
+            </div>
+          </Row>
+          {/* <li>
             <Link className='navBtn' id='profilebtn' to="/profile">Profile</Link>
           </li>
           <li>
@@ -100,9 +108,9 @@ class App extends React.Component {
             <Link className='navBtn' id='writebtn' to="/writerequestreviews">Write Request Reviews</Link>
           </li>
           <li>
-            <Link className='navBtn' to="/" onClick={() =>this.setState({logInToken: "", email: "", password: "123",})}>Sign Out</Link>
-          </li>
-        </ul>
+            <Link className='navBtn' onClick={() =>this.setState({logInToken: "", email: "", password: "123",})}>Sign Out</Link>
+          </li> */}
+        </div>
         {/* <hr /> */}
         </header>
         
