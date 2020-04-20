@@ -84,7 +84,7 @@ def get_requested_reviews():
 @jwt_optional
 def reject_review(): #TODO
     print("hello")
-    return request_write_page.reject_review({"_id": ObjectId(obj_id_to_find)})
+    return request_write_page.reject_review({"_id": ObjectId(request.get_json()["_id"])})
 
 @app.route('/time')
 def get_current_time():
