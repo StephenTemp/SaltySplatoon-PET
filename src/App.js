@@ -83,12 +83,10 @@ class App extends React.Component {
   render() {
     return (
       <Router>
-      <div>
-        <p>
-          Token: {this.state.logInToken}
-        </p>
-        <header>
-          <ul>
+      <div style={{"margin-top": "120px"}} >
+        { this.state.logInToken ? (
+        <header style={{"position": "fixed", "background": "#eeeeee", "width": "100%", "height": "90px", "margin-top": "-120px", "z-index": "1"}}>
+          <ul style={{"padding-top": "30px", "padding-bottom": "20px"}}>
           <li>
             <Link className='navBtn' id='homebtn' color='primary' to="/">Home</Link>
           </li>
@@ -102,9 +100,11 @@ class App extends React.Component {
             <Link className='navBtn' id='writebtn' to="/writerequestreviews">Write Request Reviews</Link>
           </li>
         </ul>
-        <hr />
+        {/* <hr /> */}
         </header>
         
+        ) : ""
+        }
 
         {/*
           A <Switch> looks through all its children <Route>
@@ -113,8 +113,11 @@ class App extends React.Component {
           you have multiple routes, but you want only one
           of them to render at a time
         */}
+        
         {this.state.logInToken ? 
-          (<Switch>
+          ( 
+          
+          <Switch>
             <Route exact path="/">
               <Home logInToken={this.state.logInToken}/>
             </Route>
@@ -127,12 +130,14 @@ class App extends React.Component {
             <Route path="/writerequestreviews">
               <WriteRequestReviews logInToken={this.state.logInToken}/>
             </Route>
-          </Switch>)
+          </Switch>
+          
+          )
         : 
-        <Container className="App">
-        <h2>Sign In(user=test@test.com, pass="pass")</h2>
+        <Container className="App" fluid="sm" style={{"margin-top": "100px", "text-align": "left", "transform": "translate(-50%,-100%)", "left": "50%", "top": "50%", "position": "absolute"}}>
+        <h2 style={{"text-align": "center"}}>Sign In</h2>
         <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
-          <Col>
+          <Col sm="12" md={{ size: 6, offset: 3 }}>
             <FormGroup>
               <Label>Email</Label>
               <Input
@@ -144,7 +149,7 @@ class App extends React.Component {
               />
             </FormGroup>
           </Col>
-          <Col>
+          <Col sm="12" md={{ size: 6, offset: 3 }}>
             <FormGroup>
               <Label for="examplePassword">Password</Label>
               <Input
@@ -156,8 +161,10 @@ class App extends React.Component {
                 onChange={ (e) => this.handleChange(e) }
               />
             </FormGroup>
+          </Col >
+          <Col sm="12" md={{ size: 6, offset: 3 }}>
+            <Button>Submit</Button>
           </Col>
-          <Button>Submit</Button>
         </Form>
       </Container>
         }
