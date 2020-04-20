@@ -31,6 +31,21 @@ def get_user_reviews(email):
 
     return jsonify(reviews_list=reviews_list), 200 # add more if needed
 
-# def get_employee_reviews(email):
+def get_managers():
+    PET_db = client["PET"]
 
+    # initialize managers list
+    managers_list = []
+
+    # get employee data
+    employee_data = PET_db["employee_data"]
+
+    # search for managers
+    for employee in employee_data:
+        if hasattr(employee, "managerId"):
+            cur_manager_name = employee["firstName"] + " " + employee["lastName"]
+            managers_list.append({"id": employee["employeeId"],"manager": cur_manager_name})
+    
+    return jsonify(managers_list=managers_list), 200
+        
 
