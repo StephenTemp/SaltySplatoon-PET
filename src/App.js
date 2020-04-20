@@ -99,6 +99,9 @@ class App extends React.Component {
           <li>
             <Link className='navBtn' id='writebtn' to="/writerequestreviews">Write Request Reviews</Link>
           </li>
+          <li>
+            <Link className='navBtn' to="/" onClick={() =>this.setState({logInToken: "", email: "", password: "123",})}>Sign Out</Link>
+          </li>
         </ul>
         {/* <hr /> */}
         </header>
