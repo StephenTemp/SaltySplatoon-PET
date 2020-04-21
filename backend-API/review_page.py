@@ -48,4 +48,23 @@ def get_managers():
     
     return jsonify(managers_list=managers_list), 200
         
+def get_employees_of_manager(email):
+    PET_db = client["PET"]
+
+    # initialize employees of manager liste
+    employees_of_manager = []
+
+    #get the employee id of manager
+    employees = PET_db["employee_data"]
+
+    # get the id of the manager whose email corresponds with parameter
+    manager = employees.find_one({"email": "/^" + email + "$/i"}) #uses regex to ignore case-sensitivity
+    managerId = manager["employeeId"]
+
+    #get every employee who has the given managerId
+    for employee in employees.find({"managerId": managerId})
+        employees_of_manager.append(employee)
+    
+    return jsonify(employees_of_manager=employees_of_manager), 200
+
 
