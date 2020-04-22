@@ -81,7 +81,7 @@ def get_requested_reviews(email):
     cur_employee_id = current_employee["employeeId"]
     cur_employee_company_id = current_employee["companyId"]
 
-    for employee in requests.find({"reviewer_id": cur_employee_id, "companyId": cur_employee_company_id, "rejected": False}): # find all data that reviewer is current user
+    for employee in requests.find({"reviewer_id": cur_employee_id, "companyId": cur_employee_company_id, "rejected": False, "completed": False}): # find all data that reviewer is current user
         cur_requester = employee_data.find_one({"employeeId": employee["requester_id"]}) # find current requester's data from "employee_data".
         cur_requester_name = cur_requester["firstName"] + " " + cur_requester["lastName"] # get cureent requester's name.
         requestes_list.append({"requester": cur_requester_name, "date": employee["date"], "review_content_id": str(employee["review_content_id"]), "request_id": str(employee["_id"])}) # push requester's name, request's date, review_content_id and current request id to return list.

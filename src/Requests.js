@@ -45,7 +45,7 @@ class Requests extends React.Component {
         e.stopPropagation();
         if (await confirm(
             "Confirm Request Removal",
-            "Are you sure you want to reject this request from "+this.state.requests[index].requesterName+"?",
+            "Are you sure you want to reject this request from "+this.state.requests[index]["requester"]+"?",
             "danger",
             "secondary",
             "Yes",
@@ -155,6 +155,11 @@ class Requests extends React.Component {
         console.log(this.state.requests)
         console.log(this.props.requests)
         console.log("state end")
+
+        // if (!this.state.requests) {
+        //     this.state.requests = []
+        // }
+
         return <div key={'key'}>{this.state.requests.map((request, index) => (request ?
         // return <div key={'key'}>{this.props.requests.map((request, index) => (request ?
             <Container fluid='sm'>
