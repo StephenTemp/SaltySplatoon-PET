@@ -48,7 +48,6 @@ class ViewReviews extends React.Component {
           currentTime: 0,
           myEmployees: [],
           userReviews: [],
-          responseData: [],
           fakeReviews: fakeReviews,
           reviewer: "Reviewer 1",
           employeeValue: [],
@@ -68,7 +67,6 @@ class ViewReviews extends React.Component {
         .then(response => response.json())
         .then(data =>
           this.setState({
-            responseData: data,
             myEmployees: data.employees_of_manager,
           }
         )
@@ -81,8 +79,6 @@ class ViewReviews extends React.Component {
           }
         )
       );
-      console.log("Test")
-      console.log(this.state.responseData)
     }
 
     handleEmployeeChange(selectedOptions){
@@ -134,7 +130,7 @@ class ViewReviews extends React.Component {
               </Row>
             </Container>
             <div className = "view-reviews">
-              <Review reviews={ this.state.userReviews } logInToken={this.props.logInToken}/>
+              <Review key={"key"} reviews={ this.state.userReviews } logInToken={this.props.logInToken}/>
             </div>
 {/* 
               <p>

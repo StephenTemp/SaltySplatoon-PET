@@ -22,6 +22,12 @@ class Reviews extends React.Component {
 		})
 	}
 
+	componentWillReceiveProps(nextProps){
+        this.setState({
+            reviews: nextProps.reviews
+        })
+    }
+
 	Hidden = (reviewerName) => {
 		var hiddentextarea = document.getElementById('textarea')
 		if(hiddentextarea.style.display === 'none'){
@@ -33,7 +39,7 @@ class Reviews extends React.Component {
 
 	render() {
         //console.log(this.props.todos)
-        return this.state.reviews.map((review, index) => (
+        return <div key={'key'}>{this.state.reviews.map((review, index) => (
             <Container fluid='sm'>
                 <p style={reviewstyle}>
                     <p onClick = {() => this.handleCollapse(index)}>
@@ -59,7 +65,7 @@ class Reviews extends React.Component {
                     </Collapse>
                 </p>
             </Container>
-        ));
+        : ""))}</div>;
     }
 }
 
