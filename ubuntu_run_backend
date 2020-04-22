@@ -1,0 +1,6 @@
+cd backend-API
+source venv/bin/activate
+sudo systemctl start mongod
+flask run
+sudo systemctl stop mongod
+deactivate
