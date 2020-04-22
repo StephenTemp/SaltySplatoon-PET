@@ -7,6 +7,6 @@ yes | sudo apt update
 yes | sudo apt install yarn python3 python3-pip python3-venv mongodb-org
 yarn
 cd backend-API
-sudo pip3 install virtualenv flask python-dotenv flask_jwt_extended
+sudo pip3 install virtualenv flask python-dotenv flask_jwt_extended bson
 virtualenv -p python3 venv
 cd ..
