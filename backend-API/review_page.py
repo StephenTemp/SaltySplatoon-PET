@@ -21,7 +21,7 @@ def get_user_reviews(email):
     cur_employee_company_id = current_employee["companyId"]
 
     # search for reviews
-    for review in requests.find({"requester.id": cur_employee_id, "companyId": cur_employee_company_id}):
+    for review in requests.find({"requester_id": cur_employee_id, "companyId": cur_employee_company_id}):
         # only if review is complete then add
         if(review["complete"]):
             # get reviewer data and review content and append

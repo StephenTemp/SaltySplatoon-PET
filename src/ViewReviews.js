@@ -47,6 +47,8 @@ class ViewReviews extends React.Component {
           logInToken: this.props.logInToken,
           currentTime: 0,
           myEmployees: [],
+          userReviews: [],
+          responseData: [],
           fakeReviews: fakeReviews,
           reviewer: "Reviewer 1",
           employeeValue: [],
@@ -57,19 +59,30 @@ class ViewReviews extends React.Component {
     }
 
     componentDidMount(){
-      const requestOptions = {
+      const reviewOptions = {
         method: 'POST',
         headers: { 'Authorization': 'Bearer ' + this.state.logInToken, 'Content-Type': 'application/json' },
         body: JSON.stringify({  })
       };
-      fetch('/get_employees_of_manager', requestOptions)
+      fetch('/get_employees_of_manager', reviewOptions)
         .then(response => response.json())
         .then(data =>
           this.setState({
+            responseData: data,
             myEmployees: data.employees_of_manager,
           }
         )
       );
+      fetch('/get-reviews', reviewOptions)
+        .then(response => response.json())
+        .then(data => 
+          this.setState({
+            userReviews: data.reviews_list,
+          }
+        )
+      );
+      console.log("Test")
+      console.log(this.state.responseData)
     }
 
     handleEmployeeChange(selectedOptions){
@@ -85,7 +98,7 @@ class ViewReviews extends React.Component {
     }
 
     render() {
-      console.log(this.state.fakeReviews)
+      //console.log(this.state.userReviews)
         return (
           <div className="App">
             <div className="view-employees">
@@ -121,7 +134,7 @@ class ViewReviews extends React.Component {
               </Row>
             </Container>
             <div className = "view-reviews">
-              <Review reviews={ this.state.fakeReviews }/>
+              <Review reviews={ this.state.userReviews } logInToken={this.props.logInToken}/>
             </div>
 {/* 
               <p>

@@ -6,6 +6,7 @@ class Reviews extends React.Component {
 	constructor(props){
 		super(props)
 		this.state = {
+			logInToken: this.props.logInToken,
 			reviews: this.props.reviews,
 			c: true
 		}
@@ -39,22 +40,22 @@ class Reviews extends React.Component {
                         <Container>
                             <Row>
                             	<Col>
-                                    <h4 style={h4inlinestyle}>{ review.userID }</h4>
+                                    <h4 style={h4inlinestyle}>{ review.reviewer_id }</h4>
                                 </Col>
                                 <Col>
-                                    <h4 style={h4inlinestyle}>{ review.reviewerLName }</h4>
+                                    <h4 style={h4inlinestyle}>{ review.reviewer_lastname }</h4>
                                 </Col>
                                 <Col>
-                                	<h4 style={h4inlinestyle}>{ review.reviewerFName }</h4>
+                                	<h4 style={h4inlinestyle}>{ review.reviewer_firstname }</h4>
                                 </Col>
                                 <Col>
-                                    <h4 style={h4inlinestyle}>{ review.dateReviewed }</h4>
+                                    <h4 style={h4inlinestyle}>{ review.date }</h4>
                                 </Col>
                             </Row>
                         </Container>
                     </p>
                     <Collapse isOpen={this.state.reviews[index].collapsed}>
-                        <p style={textareastyle}>{ review.content }</p>
+                        <p style={textareastyle}>{ review.review }</p>
                     </Collapse>
                 </p>
             </Container>
