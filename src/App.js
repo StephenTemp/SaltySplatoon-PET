@@ -119,7 +119,7 @@ class App extends React.Component {
               <Profile />
             </Route>
             <Route path="/viewreviews">
-              <ViewReviews />
+              <ViewReviews logInToken={this.state.logInToken}/>
             </Route>
             <Route path="/writerequestreviews">
               <WriteRequestReviews number1={25}/>

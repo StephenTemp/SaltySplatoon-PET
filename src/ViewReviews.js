@@ -9,8 +9,8 @@ class ViewReviews extends React.Component {
     constructor(props) {
         super(props);
         //let fakeReviewPeople = ["P1", "P2", "P3", "P4"]
-        let myEmployees = ["John Smith", "Walter White", "Big Cheese", "The Dude"]
-        myEmployees = myEmployees.map(x => {
+        let myFakeEmployees = ["John Smith", "Walter White", "Big Cheese", "The Dude"]
+        myFakeEmployees = myFakeEmployees.map(x => {
           return ({value : x, label : x});
         })
 
@@ -44,8 +44,9 @@ class ViewReviews extends React.Component {
         });
 
         this.state = {
+          logInToken: this.props.logInToken,
           currentTime: 0,
-          myEmployees: myEmployees,
+          myEmployees: [],
           fakeReviews: fakeReviews,
           reviewer: "Reviewer 1",
           employeeValue: [],
@@ -56,15 +57,19 @@ class ViewReviews extends React.Component {
     }
 
     componentDidMount(){
-      this.setState({
-        currentTime: 5
-      });
-      console.log(this.state.currentTime)
-      fetch('/time').then(res => res.json()).then(data => {
-        this.setState({
-          currentTime: data.time,
-        });
-      });
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + this.state.logInToken, 'Content-Type': 'application/json' },
+        body: JSON.stringify({  })
+      };
+      fetch('/get_employees_of_manager', requestOptions)
+        .then(response => response.json())
+        .then(data =>
+          this.setState({
+            myEmployees: data.employees_of_manager,
+          }
+        )
+      );
     }
 
     handleEmployeeChange(selectedOptions){

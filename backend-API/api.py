@@ -1,5 +1,6 @@
 import time
 from flask import Flask, jsonify, request
+from bson.objectid import ObjectId
 from flask_jwt_extended import (
     JWTManager, jwt_required, jwt_optional, create_access_token,
     get_jwt_identity
@@ -60,8 +61,14 @@ def validate_username_and_password(username, password):
     return username
 
 @app.route('/get-reviews', methods=['POST'])
+@jwt_optional
 def get_reviews():
-    return review_page.get_reviews(get_jwt_identity())
+    return review_page.get_user_reviews(get_jwt_identity())
+
+@app.route('/get_employees_of_manager', methods=['POST'])
+@jwt_optional
+def get_employees_of_manager():
+    return review_page.get_employees_of_manager(get_jwt_identity())
 
 @app.route('/time')
 def get_current_time():
