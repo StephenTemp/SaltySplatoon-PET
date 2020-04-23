@@ -89,8 +89,27 @@ def get_requested_reviews(email):
     # Returns just a 200 response which means the request was successful
     return jsonify(requestes_list=requestes_list), 200
 
+def save_review(json):
+
+    PET_db = client["PET"]
+
+    review_content = PET_db["review_content"]
+
+    review_content_id = json["review_content_id"]
+
+    content = json["content"]
+
+    save_query = {"_id" : review_content_id}
+
+    save_new = {"$set" : {"content": content}}
+
+    review_content.update_one(save_query, save_new)
+
+    # Returns just a 200 response which means the request was successful
+    return jsonify(), 200
+
 def reject_review(json):
-    myclient = MongoClient('mongodb://localhost:27017/');
+    myclient = MongoClient('mongodb://localhost:27017/')
 
     # get request id
     request_id = json['_id']

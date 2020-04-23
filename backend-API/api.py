@@ -80,6 +80,12 @@ def send_review_requests():
 def get_requested_reviews():
     return request_write_page.get_requested_reviews(get_jwt_identity())
 
+@app.route('/save_review', methods=['POST'])
+@jwt_optional
+def save_review(): #TODO
+    print("hello")
+    return request_write_page.save_review({"review_content_id": ObjectId(request.get_json()["review_content_id"]), "content": request.get_json()["content"]})
+
 @app.route('/reject_review', methods=['POST'])
 @jwt_optional
 def reject_review(): #TODO

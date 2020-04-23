@@ -83,7 +83,7 @@ class Requests extends React.Component {
     handleTextChange(e, ind) {
         console.log("New text for " + ind + "is: " + e.target.value)
         //console.log("Word count is: " + e.target.value.trim().split(" ").length);
-        console.log("Word count is: " + e.target.value.length);
+        console.log("Char count is: " + e.target.value.length);
         console.log(e)
         this.setState({ requests: this.state.requests.map((request, index) => {
             if (index === ind){
@@ -105,9 +105,21 @@ class Requests extends React.Component {
         let requestsCopy = [...this.state.requests];
         requestsCopy[index].content = saveContent;
         requestsCopy[index].saved_at_time = new Date().toLocaleTimeString();
-        this.setState({
-            requests: requestsCopy
+        console.log(requestsCopy, index)
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
+            body: JSON.stringify({"review_content_id" : requestsCopy[index]['review_content_id'], "content" : requestsCopy[index]['content']})
+          };
+        fetch('/save_review', requestOptions)
+        // .then(res => res.text())          // convert to plain text
+        // .then(text => console.log(text))
+        .then(response => response.json())
+        .then(data =>
+            this.setState({
+                requests: this.state.requests
             })
+        );
         console.log(this.state.requests)
     }
 
@@ -125,6 +137,7 @@ class Requests extends React.Component {
             // this.setState({ requests: this.state.requests.map(request => {
 
             // }) })
+            
             delete this.state.requests[index];
             this.setState({
                 requests: this.state.requests
