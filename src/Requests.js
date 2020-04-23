@@ -92,14 +92,11 @@ class Requests extends React.Component {
     }
 
     handleSaveReview(e, index){
-
-        this.state.requests[index].saved_at_time = new Date().toLocaleTimeString();
-        console.log(this.state.requests[index]['content'])
         const requestOptions = {
             method: 'POST',
             headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
             body: JSON.stringify({"review_content_id" : this.state.requests[index]['review_content_id'], "content" : this.state.requests[index]['content']})
-          };
+        };
         fetch('/save_review', requestOptions)
         // .then(res => res.text())          // convert to plain text
         // .then(text => console.log(text))

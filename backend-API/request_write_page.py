@@ -104,10 +104,14 @@ def save_review(json):
     review_content_id = json["review_content_id"]
 
     content = json["content"]
-    print(content)
+
+
+    saved_at_time = datetime.datetime.now()
+    
+    
     save_query = {"_id" : review_content_id}
 
-    save_new = {"$set" : {"content": content}}
+    save_new = {"$set" : {"content": content, "date": saved_at_time}}
 
     review_content.update_one(save_query, save_new)
 
