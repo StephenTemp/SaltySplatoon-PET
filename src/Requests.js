@@ -180,7 +180,7 @@ class Requests extends React.Component {
                         </Container>
                     </p>
                     <Collapse isOpen={this.state.requests[index].collapsed}>
-                        <textarea id='textarea' style={textareastyle} name='textarea' rows='10' onChange={(e)=>{this.handleTextChange(e,index)}}></textarea>
+        <textarea id='textarea' style={textareastyle} name='textarea' rows='10' onChange={(e)=>{this.handleTextChange(e,index)}}>{request.content}</textarea>
                         <p id='char_count' sytle={char_count_style} >{request.text_length_left}/5000</p>
                         <br></br>
                         <p style={{display: 'flex', justifyContent: 'flex-end', margin:'5px', marginRight: '15px'}}>
