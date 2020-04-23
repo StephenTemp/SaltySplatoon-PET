@@ -104,7 +104,7 @@ def save_review(json):
     review_content_id = json["review_content_id"]
 
     content = json["content"]
-
+    print(content)
     save_query = {"_id" : review_content_id}
 
     save_new = {"$set" : {"content": content}}

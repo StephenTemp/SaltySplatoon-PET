@@ -19,20 +19,13 @@ class Requests extends React.Component {
 
     handleCollapse(index) {
         let requestsCopy = [...this.state.requests];
-        console.log(requestsCopy);
+        // console.log(requestsCopy);
         requestsCopy[index].collapsed = !requestsCopy[index].collapsed;
         this.setState({
             requests: requestsCopy
         })
     }
 
-    // componentDidMount(){
-    //     console.log("props")
-    //     this.setState({
-    //         requests: this.props.requests
-    //     })
-    //     console.log(this.props.requests)
-    // }
 
     componentWillReceiveProps(nextProps){
         this.setState({
@@ -52,7 +45,7 @@ class Requests extends React.Component {
             "Cancel"
             )) {
 
-              console.log("TEST-------------------")
+            //   console.log("TEST-------------------")
                 //MESSING WITH THIS
               const requestOptions = {
                 method: 'POST',
@@ -81,15 +74,16 @@ class Requests extends React.Component {
 
 
     handleTextChange(e, ind) {
-        console.log("New text for " + ind + "is: " + e.target.value)
+        // console.log("New text for " + ind + "is: " + e.target.value)
         //console.log("Word count is: " + e.target.value.trim().split(" ").length);
-        console.log("Char count is: " + e.target.value.length);
-        console.log(e)
+        // console.log("Char count is: " + e.target.value.length);
+        console.log(e.target.value)
         this.setState({ requests: this.state.requests.map((request, index) => {
             if (index === ind){
                 // console.log(e.target.value.length)
                 // console.log(request.requesterName)
                 request.text_length_left = e.target.value.length
+                request.content = e.target.value;
             }
             return request
         })
@@ -98,29 +92,25 @@ class Requests extends React.Component {
     }
 
     handleSaveReview(e, index){
-        let saveContent = document.getElementById('textarea').value
-        // this.setState({ requests: this.state.requests.map(request => {
 
-        // }) })
-        let requestsCopy = [...this.state.requests];
-        requestsCopy[index].content = saveContent;
-        requestsCopy[index].saved_at_time = new Date().toLocaleTimeString();
-        console.log(requestsCopy, index)
+        this.state.requests[index].saved_at_time = new Date().toLocaleTimeString();
+        console.log(this.state.requests[index]['content'])
         const requestOptions = {
             method: 'POST',
             headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
-            body: JSON.stringify({"review_content_id" : requestsCopy[index]['review_content_id'], "content" : requestsCopy[index]['content']})
+            body: JSON.stringify({"review_content_id" : this.state.requests[index]['review_content_id'], "content" : this.state.requests[index]['content']})
           };
         fetch('/save_review', requestOptions)
         // .then(res => res.text())          // convert to plain text
         // .then(text => console.log(text))
         .then(response => response.json())
         .then(data =>
-            this.setState({
-                requests: this.state.requests
-            })
+            {}
         );
-        console.log(this.state.requests)
+
+        this.setState({
+            requests: [...this.state.requests]
+        })
     }
 
     async handleSendReview(e, index){
@@ -164,10 +154,6 @@ class Requests extends React.Component {
     // }
 
     render() {
-        console.log("state")
-        console.log(this.state.requests)
-        console.log(this.props.requests)
-        console.log("state end")
 
         // if (!this.state.requests) {
         //     this.state.requests = []
@@ -193,7 +179,7 @@ class Requests extends React.Component {
                         </Container>
                     </p>
                     <Collapse isOpen={this.state.requests[index].collapsed}>
-        <textarea id='textarea' style={textareastyle} name='textarea' rows='10' onChange={(e)=>{this.handleTextChange(e,index)}}>{request.content}</textarea>
+        <textarea id='textarea' value={request.content} style={textareastyle} name='textarea' rows='10' onChange={(e)=>{this.handleTextChange(e,index)}}></textarea>
                         <p id='char_count' sytle={char_count_style} >{request.text_length_left}/5000</p>
                         <br></br>
                         <p style={{display: 'flex', justifyContent: 'flex-end', margin:'5px', marginRight: '15px'}}>
