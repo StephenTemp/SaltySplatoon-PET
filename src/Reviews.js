@@ -39,7 +39,7 @@ class Reviews extends React.Component {
 
 	render() {
         //console.log(this.props.todos)
-        return <div key={'key'}>{this.state.reviews.map((review, index) => (
+        return <div key={'key'}>{this.state.reviews.map((review, index) => (review ?
             <Container fluid='sm'>
                 <p style={reviewstyle}>
                     <p onClick = {() => this.handleCollapse(index)}>

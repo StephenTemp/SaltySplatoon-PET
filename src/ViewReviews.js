@@ -61,7 +61,7 @@ class ViewReviews extends React.Component {
       const reviewOptions = {
         method: 'POST',
         headers: { 'Authorization': 'Bearer ' + this.state.logInToken, 'Content-Type': 'application/json' },
-        body: JSON.stringify({  })
+        body: JSON.stringify({employee_emails: null})
       };
       fetch('/get_employees_of_manager', reviewOptions)
         .then(response => response.json())
@@ -90,7 +90,45 @@ class ViewReviews extends React.Component {
     }
 
     async handleViewEmployee(selectedOptions){
-      console.log(this.state.selectedEmployee)
+      console.log("Changing reviews : ", this.state.selectedEmployee)
+      const reviewOptions = {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + this.state.logInToken, 'Content-Type': 'application/json' },
+        body: JSON.stringify({employee_emails: this.state.selectedEmployee.value})
+      };
+      fetch('/get-reviews', reviewOptions)
+        .then(response => response.json())
+        .then(data => 
+          this.setState({
+            userReviews: data.reviews_list,
+          }
+        )
+      );
+      this.setState({
+        selectedEmployee: [],
+        employeeValue: []
+      })
+    }
+
+    async handleViewMyself(selectedOptions){
+      console.log("Changing reviews : ", this.state.selectedEmployee)
+      const reviewOptions = {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + this.state.logInToken, 'Content-Type': 'application/json' },
+        body: JSON.stringify({employee_emails: null})
+      };
+      fetch('/get-reviews', reviewOptions)
+        .then(response => response.json())
+        .then(data => 
+          this.setState({
+            userReviews: data.reviews_list,
+          }
+        )
+      );
+      this.setState({
+        selectedEmployee: [],
+        employeeValue: []
+      })
     }
 
     render() {
@@ -105,7 +143,7 @@ class ViewReviews extends React.Component {
                   </Col>
                   <Col></Col>
                   <Col xs='2'>
-                    <Button color = {'primary'} onClick = {(selectedOptions) => this.handleViewEmployee(selectedOptions)}>My Reviews</Button>
+                    <Button color = {'primary'} onClick = {(selectedOptions) => this.handleViewMyself(selectedOptions)}>My Reviews</Button>
                   </Col>
                   <Col xs='3'>
                     <Select 

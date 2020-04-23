@@ -6,7 +6,8 @@ client = MongoClient('mongodb://localhost:27017/')
 
 def get_user_reviews(email):
     PET_db = client["PET"]
-
+    #print("Email: " + email)
+    
     # initialize review list
     reviews_list = [] 
 
