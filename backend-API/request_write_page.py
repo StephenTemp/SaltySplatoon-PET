@@ -76,6 +76,8 @@ def get_requested_reviews(email):
 
     requests = PET_db["requests"] # find collection "requests"
 
+    review_contents = PET_db["review_content"]
+
     requestes_list = [] # initial the return list
 
     cur_employee_id = current_employee["employeeId"]
@@ -84,13 +86,40 @@ def get_requested_reviews(email):
     for employee in requests.find({"reviewer_id": cur_employee_id, "companyId": cur_employee_company_id, "rejected": False, "complete": False}): # find all data that reviewer is current user
         cur_requester = employee_data.find_one({"employeeId": employee["requester_id"]}) # find current requester's data from "employee_data".
         cur_requester_name = cur_requester["firstName"] + " " + cur_requester["lastName"] # get cureent requester's name.
-        requestes_list.append({"requester": cur_requester_name, "date": employee["date"], "review_content_id": str(employee["review_content_id"]), "request_id": str(employee["_id"])}) # push requester's name, request's date, review_content_id and current request id to return list.
+        
+        
+        review_content_doc = review_contents.find_one({"_id": employee["review_content_id"]})
+        review_content = review_content_doc["content"]
+        requestes_list.append({"requester": cur_requester_name, "date": employee["date"], "review_content_id": str(employee["review_content_id"]), "request_id": str(employee["_id"]), "content": review_content}) # push requester's name, request's date, review_content_id and current request id to return list.
 
     # Returns just a 200 response which means the request was successful
     return jsonify(requestes_list=requestes_list), 200
 
+def save_review(json):
+
+    PET_db = client["PET"]
+
+    review_content = PET_db["review_content"]
+
+    review_content_id = json["review_content_id"]
+
+    content = json["content"]
+
+
+    saved_at_time = datetime.datetime.now()
+    
+    
+    save_query = {"_id" : review_content_id}
+
+    save_new = {"$set" : {"content": content, "date": saved_at_time}}
+
+    review_content.update_one(save_query, save_new)
+
+    # Returns just a 200 response which means the request was successful
+    return jsonify(), 200
+
 def reject_review(json):
-    myclient = MongoClient('mongodb://localhost:27017/');
+    myclient = MongoClient('mongodb://localhost:27017/')
 
     # get request id
     request_id = json['_id']

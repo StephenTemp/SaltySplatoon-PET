@@ -84,7 +84,6 @@ class WriteRequestReviews extends React.Component {
     }
 
     handleRequestChange(selectedOptions){
-      console.log("Current requests: ", selectedOptions)
       this.setState({
         selectedRequestReviewers: selectedOptions,
         requestsValue: selectedOptions
@@ -92,7 +91,6 @@ class WriteRequestReviews extends React.Component {
     }
 
     async handleRequestReview(selectedOptions){
-      console.log(this.state.selectedRequestReviewers)
       let numPeople = this.state.selectedRequestReviewers?this.state.selectedRequestReviewers.length:0;
       let peopleStr = "";
       let requestEmails = []
@@ -135,9 +133,6 @@ class WriteRequestReviews extends React.Component {
     }
 
     render() {
-      console.log("write start")
-      console.log(this.state.requestedReviews)
-      console.log("write end")
         return (
           <div className="App">
             <div className = "request-reviews">
@@ -165,25 +160,6 @@ class WriteRequestReviews extends React.Component {
             <div className = "write-reviews">//edited
               <Requests key={"key"} requests={ this.state.requestedReviews} logInToken={this.props.logInToken}/>
             </div>
-{/*
-              <p>
-                This is the WriteRequestReviews.js file. The number is {this.props.number1}.
-            </p>
-            <header className="App-header">
-              <img src={logo} className="App-logo" alt="logo" />
-              <p>
-                Edit <code>src/App.js</code> and save to reload.
-              </p>
-              <p>The current time is {this.state.currentTime}.</p>
-              <a
-                className="App-link"
-                href="https://reactjs.org"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Learn React
-              </a>
-            </header> */}
           </div>
         );
       }
