@@ -5,6 +5,7 @@ from flask_jwt_extended import (
     JWTManager, jwt_required, jwt_optional, create_access_token,
     get_jwt_identity
 )
+from pymongo import MongoClient
 
 import review_page
 import request_write_page
@@ -36,7 +37,17 @@ def login():
     if possible_valid_credentials:
         # Identity can be any data that is json serializable
         access_token = create_access_token(identity=username)
-        return jsonify(access_token=access_token), 200
+
+        client = MongoClient('mongodb://localhost:27017/')
+        current_user_email = username
+        PET_db = client["PET"]
+
+        employee_data = PET_db["employee_data"]
+        # Find the first employee with the same email as the current user
+        current_employee = employee_data.find_one({"email": current_user_email})
+        employee_name = current_employee["firstName"] + " " + current_employee["lastName"]
+
+        return jsonify(access_token=access_token, name=employee_name), 200
 
     else:
         return jsonify({"msg": "Bad username or password"}), 401
@@ -47,11 +58,16 @@ def login():
 def partially_protected():
     # If no JWT is sent in with the request, get_jwt_identity()
     # will return None
-    current_user = get_jwt_identity()
-    if current_user:
-        return jsonify(user=current_user), 200
-    else:
-        return jsonify(user='anonymous user'), 200
+    client = MongoClient('mongodb://localhost:27017/')
+    current_user_email = get_jwt_identity()
+    PET_db = client["PET"]
+
+    employee_data = PET_db["employee_data"]
+    # Find the first employee with the same email as the current user
+    current_employee = employee_data.find_one({"email": current_user_email})
+    employee_name = current_employee["firstName"] + " " + current_employee["lastName"]
+    
+    return jsonify(user=employee_name), 200
 
 
 def validate_username_and_password(username, password):

@@ -90,6 +90,7 @@ class Requests extends React.Component {
     }
 
     handleSaveReview(e, index){
+        this.state.requests[index]["saved_at_time"] = "Last saved at " + new Date().toLocaleTimeString();
         const requestOptions = {
             method: 'POST',
             headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
@@ -207,7 +208,7 @@ class Requests extends React.Component {
                         <p id='char_count' sytle={char_count_style} >{request.text_length_left}/5000</p>
                         <br></br>
                         <p style={{display: 'flex', justifyContent: 'flex-end', margin:'5px', marginRight: '15px'}}>
-                            <i id='savedat' style={{position:'relative', right:'62%'}}>saved at {request.saved_at_time}</i>
+                            <i id='savedat' style={{marginRight:'30px'}}>{request.saved_at_time}</i>
                             <Button id='savebtn' style={{marginRight: '10px'}} color='secondary' onClick={(e) => (this.handleSaveReview(e, index))}>Save</Button>
                             <Button id='sendreviewbtn' color='success' onClick={(e) => (this.handleSendReview(e, index))}>Send Review</Button>
                         </p>

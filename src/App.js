@@ -71,7 +71,8 @@ class App extends React.Component {
       .then(response => response.json())
       .then(data =>
         this.setState({
-          logInToken: data.access_token
+          logInToken: data.access_token,
+          name: data.name
         })
       );
   }
@@ -94,8 +95,11 @@ class App extends React.Component {
               <Button tag = {Link} id='viewbtn' to="/viewreviews">View Reviews</Button>{" "}
               <Button tag = {Link} id='writebtn' to="/writerequestreviews">Write Request Reviews</Button>
             </Col>
-            <div style={{"position": "absolute", "right": "0px", "padding-right": "30px"}}>
+            <div style={{ "padding-right": "50px", "padding-top": "5px"}}>
+              <Row>
+              <div style={{"padding-right": "20px", "padding-top": "6px"}}>{"Hi " + this.state.name + "!"}</div>
               <Button tag = {Link} id='signout' to="/" onClick={() =>this.setState({logInToken: "", email: "", password: "123",})}>Sign Out</Button>
+              </Row>
             </div>
           </Row>
           {/* <li>
