@@ -118,6 +118,19 @@ class Requests extends React.Component {
             "Cancel"
             )) {
 
+              const saveRequestOptions = {
+                  method: 'POST',
+                  headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
+                  body: JSON.stringify({"review_content_id" : this.state.requests[index]['review_content_id'], "content" : this.state.requests[index]['content']})
+              };
+              fetch('/save_review', saveRequestOptions)
+              // .then(res => res.text())          // convert to plain text
+              // .then(text => console.log(text))
+              .then(response => response.json())
+              .then(data =>
+                  {}
+              );
+
               //IN PROGRESS
               const requestOptions = {
                 method: 'POST',
