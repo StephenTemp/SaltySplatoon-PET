@@ -109,3 +109,18 @@ def reject_review(json):
 
     # Returns just a 200 response which means the request was successful
     return jsonify(), 200
+
+def send_review(json):
+    PET_db = client["PET"]
+
+    # get request id
+    request_id = json['_id']
+
+    # get the request and set it to completed
+    rejected_query = {"_id" : request_id}
+    rejected_new = {"$set" : {"complete": True}}
+
+    requests.update_one(rejected_query, rejected_new)
+
+    # Returns just a 200 response which means the request was successful
+    return jsonify(), 200

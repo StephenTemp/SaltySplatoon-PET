@@ -52,8 +52,6 @@ class Requests extends React.Component {
             "Cancel"
             )) {
 
-              console.log("TEST-------------------")
-                //MESSING WITH THIS
               const requestOptions = {
                 method: 'POST',
                 headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
@@ -98,6 +96,7 @@ class Requests extends React.Component {
     }
 
     handleSaveReview(e, index){
+
         let saveContent = document.getElementById('textarea').value
         // this.setState({ requests: this.state.requests.map(request => {
 
@@ -109,6 +108,8 @@ class Requests extends React.Component {
             requests: requestsCopy
             })
         console.log(this.state.requests)
+
+
     }
 
     async handleSendReview(e, index){
@@ -120,6 +121,22 @@ class Requests extends React.Component {
             "Yes",
             "Cancel"
             )) {
+
+              //IN PROGRESS
+              const requestOptions = {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
+                body: JSON.stringify({"_id" : this.state.requests[index]['request_id']})
+              };
+              fetch('/send_review', requestOptions)
+                .then(response => response.json())
+                .then(data =>
+                  this.setState({
+
+                  }
+                )
+              );
+
             // Save the review
             let saveContent = document.getElementById('textarea').value
             // this.setState({ requests: this.state.requests.map(request => {
