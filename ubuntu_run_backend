@@ -1,0 +1,5 @@
+cd backend-API
+sudo systemctl start mongod
+flask run
+sudo systemctl stop mongod
+deactivate

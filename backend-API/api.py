@@ -7,6 +7,7 @@ from flask_jwt_extended import (
 )
 
 import review_page
+import request_write_page
 
 app = Flask(__name__)
 
@@ -19,7 +20,7 @@ jwt = JWTManager(app)
 # it to the caller however you choose.
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    
+
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
 
@@ -31,7 +32,7 @@ def login():
         return jsonify({"msg": "Missing password parameter"}), 400
 
     possible_valid_credentials = validate_username_and_password(username, password)
-    
+
     if possible_valid_credentials:
         # Identity can be any data that is json serializable
         access_token = create_access_token(identity=username)
@@ -39,7 +40,7 @@ def login():
 
     else:
         return jsonify({"msg": "Bad username or password"}), 401
-    
+
 
 @app.route('/get-username', methods=['POST'])
 @jwt_optional
@@ -73,6 +74,39 @@ def get_reviews():
 @jwt_optional
 def get_employees_of_manager():
     return review_page.get_employees_of_manager(get_jwt_identity())
+
+@app.route('/get-possible-reviewers', methods=['POST'])
+@jwt_optional
+def get_possible_reviews():
+    return request_write_page.get_possible_reviewers(get_jwt_identity())
+
+@app.route('/send-review-requests', methods=['POST'])
+@jwt_optional
+def send_review_requests():
+    return request_write_page.send_review_requests(get_jwt_identity(), request.get_json())
+
+@app.route('/get_requested_reviews', methods=['POST'])
+@jwt_optional
+def get_requested_reviews():
+    return request_write_page.get_requested_reviews(get_jwt_identity())
+
+@app.route('/save_review', methods=['POST'])
+@jwt_optional
+def save_review(): #TODO
+    print("hello")
+    return request_write_page.save_review({"review_content_id": ObjectId(request.get_json()["review_content_id"]), "content": request.get_json()["content"]})
+
+@app.route('/reject_review', methods=['POST'])
+@jwt_optional
+def reject_review(): #TODO
+    print("hello")
+    return request_write_page.reject_review({"_id": ObjectId(request.get_json()["_id"])})
+
+@app.route('/send_review', methods=['POST'])
+@jwt_optional
+def send_review(): #TODO
+    print("hello")
+    return request_write_page.send_review({"_id": ObjectId(request.get_json()["_id"])})
 
 @app.route('/time')
 def get_current_time():

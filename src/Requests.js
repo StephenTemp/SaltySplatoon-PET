@@ -8,6 +8,7 @@ class Requests extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            logInToken: this.props.logInToken,
             requests: this.props.requests,
             c: true
         }
@@ -15,13 +16,20 @@ class Requests extends React.Component {
         this.handleRejectReview = this.handleRejectReview.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
     }
-    
+
     handleCollapse(index) {
         let requestsCopy = [...this.state.requests];
-        console.log(requestsCopy);
+        // console.log(requestsCopy);
         requestsCopy[index].collapsed = !requestsCopy[index].collapsed;
         this.setState({
             requests: requestsCopy
+        })
+    }
+
+
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            requests: nextProps.requests
         })
     }
 
@@ -29,33 +37,51 @@ class Requests extends React.Component {
         // Required for preventing collapse on button click
         e.stopPropagation();
         if (await confirm(
-            "Confirm Request Removal", 
-            "Are you sure you want to reject this request from "+this.state.requests[index].requesterName+"?",
+            "Confirm Request Removal",
+            "Are you sure you want to reject this request from "+this.state.requests[index]["requester"]+"?",
             "danger",
             "secondary",
             "Yes",
             "Cancel"
             )) {
+
+              const requestOptions = {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
+                body: JSON.stringify({"_id" : this.state.requests[index]['request_id']})
+              };
+              fetch('/reject_review', requestOptions)
+                .then(response => response.json())
+                .then(data =>
+                  this.setState({
+
+                  }
+                )
+              );
+
             delete this.state.requests[index];
             this.setState({
                 requests: this.state.requests
             })
+
+
         } else {
-            
+
         }
     }
 
 
     handleTextChange(e, ind) {
-        console.log("New text for " + ind + "is: " + e.target.value)
+        // console.log("New text for " + ind + "is: " + e.target.value)
         //console.log("Word count is: " + e.target.value.trim().split(" ").length);
-        console.log("Word count is: " + e.target.value.length);
-        console.log(e)
+        // console.log("Char count is: " + e.target.value.length);
+        console.log(e.target.value)
         this.setState({ requests: this.state.requests.map((request, index) => {
             if (index === ind){
                 // console.log(e.target.value.length)
                 // console.log(request.requesterName)
                 request.text_length_left = e.target.value.length
+                request.content = e.target.value;
             }
             return request
         })
@@ -64,40 +90,75 @@ class Requests extends React.Component {
     }
 
     handleSaveReview(e, index){
-        let saveContent = document.getElementById('textarea').value
-        // this.setState({ requests: this.state.requests.map(request => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
+            body: JSON.stringify({"review_content_id" : this.state.requests[index]['review_content_id'], "content" : this.state.requests[index]['content']})
+        };
+        fetch('/save_review', requestOptions)
+        // .then(res => res.text())          // convert to plain text
+        // .then(text => console.log(text))
+        .then(response => response.json())
+        .then(data =>
+            {}
+        );
 
-        // }) })
-        let requestsCopy = [...this.state.requests];
-        requestsCopy[index].content = saveContent;
-        requestsCopy[index].saved_at_time = new Date().toLocaleTimeString();
-        this.setState({ 
-            requests: requestsCopy
-            })
-        console.log(this.state.requests)
+        this.setState({
+            requests: [...this.state.requests]
+        })
     }
 
     async handleSendReview(e, index){
         if (await confirm(
-            "Confirm Send Review", 
+            "Confirm Send Review",
             "Are you sure you want to send this review? You will not be able to make changes after it is sent.",
             "primary",
             "secondary",
             "Yes",
             "Cancel"
             )) {
+
+              const saveRequestOptions = {
+                  method: 'POST',
+                  headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
+                  body: JSON.stringify({"review_content_id" : this.state.requests[index]['review_content_id'], "content" : this.state.requests[index]['content']})
+              };
+              fetch('/save_review', saveRequestOptions)
+              // .then(res => res.text())          // convert to plain text
+              // .then(text => console.log(text))
+              .then(response => response.json())
+              .then(data =>
+                  {}
+              );
+
+              //IN PROGRESS
+              const requestOptions = {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
+                body: JSON.stringify({"_id" : this.state.requests[index]['request_id']})
+              };
+              fetch('/send_review', requestOptions)
+                .then(response => response.json())
+                .then(data =>
+                  this.setState({
+
+                  }
+                )
+              );
+
             // Save the review
             let saveContent = document.getElementById('textarea').value
             // this.setState({ requests: this.state.requests.map(request => {
-    
+
             // }) })
+
             delete this.state.requests[index];
             this.setState({
                 requests: this.state.requests
             })
             // TODO Send the review
         } else {
-            
+
         }
     }
 
@@ -110,28 +171,39 @@ class Requests extends React.Component {
         }
     }
 
+    // showSimpleDateFormat() {
+    //     var simpleDate = this.props.requests.date.split(" ")
+    //     var stringDate = simpleDate.slice(0, 3)
+    //     return stringDate
+    // }
+
     render() {
-        //console.log(this.props.todos)
-        return <div key={'key'}>{this.state.requests.map((request, index) => (request ? 
+
+        // if (!this.state.requests) {
+        //     this.state.requests = []
+        // }
+
+        return <div key={'key'}>{this.state.requests.map((request, index) => (request ?
+        // return <div key={'key'}>{this.props.requests.map((request, index) => (request ?
             <Container fluid='sm'>
                 <p style={requeststyle}>
                     <p onClick = {() => this.handleCollapse(index)}>
                         <Container>
                             <Row>
                                 <Col>
-                                    <h3 style={h3inlinestyle}>{ request.requesterName }</h3>
+                                    <h3 style={h3inlinestyle}>{ request.requester }</h3>
                                 </Col>
                                 <Col>
-                                    <h4 style={h4inlinestyle}>{ request.dateRequested }</h4>
+                                    <h4 style={h4inlinestyle}>{ request.date.split(" ")[0]+" "+request.date.split(" ")[1]+" "+request.date.split(" ")[2] }</h4>
                                 </Col>
                                 <Col xs='auto'>
-                                    <Button onClick = {(e) => {this.handleRejectReview(e, index)}} color = "danger">Reject Request</Button>
+                                    <Button onClick = {(e) => {this.handleRejectReview(e, index)}} color = "dark">Reject Request</Button>
                                 </Col>
                             </Row>
                         </Container>
                     </p>
                     <Collapse isOpen={this.state.requests[index].collapsed}>
-                        <textarea id='textarea' style={textareastyle} name='textarea' rows='10' onChange={(e)=>{this.handleTextChange(e,index)}}></textarea>
+        <textarea id='textarea' value={request.content} style={textareastyle} name='textarea' rows='10' onChange={(e)=>{this.handleTextChange(e,index)}}></textarea>
                         <p id='char_count' sytle={char_count_style} >{request.text_length_left}/5000</p>
                         <br></br>
                         <p style={{display: 'flex', justifyContent: 'flex-end', margin:'5px', marginRight: '15px'}}>
@@ -149,22 +221,22 @@ class Requests extends React.Component {
 const requeststyle = {
     margin: '15px',
     padding: '15px',
-	'background-color': '#FFF',
-	'border-radius': '8px',
-	'box-shadow': '0px 0px 10px rgba(0, 0, 0, 0.2)'
+	'backgroundColor': '#FFF',
+	'borderRadius': '8px',
+	'boxShadow': '0px 0px 10px rgba(0, 0, 0, 0.2)'
 }
 
 const h3inlinestyle = {
-    'text-align': 'left',
+    'textAlign': 'left',
 }
 
 const h4inlinestyle = {
-    'text-align': 'right',
+    'textAlign': 'right',
 }
 
 const textareastyle = {
-    'overflow-y': 'hidden',
-    width: '80%' 
+    'overflowY': 'hidden',
+    width: '80%'
 }
 
 const char_count_style = {
