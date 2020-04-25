@@ -90,6 +90,25 @@ class WriteRequestReviews extends React.Component {
       })
     }
 
+    handleSortByDate(){
+      let copyRequests = [...this.state.requestedReviews]
+      const sortedRequests = copyRequests.sort((a, b) => b.date - a.date)
+      const reversed = sortedRequests.reverse()
+      this.setState({
+        requestedReviews : reversed
+      })
+    }
+
+    // handleSortByName(){
+    //   let copyRequests = [...this.state.requestedReviews]
+    //   const sortedRequests = copyRequests.sort((a, b) => b.requester.localeCompare(a.requester))
+    //   const reversed = sortedRequests.reverse()
+    //   this.setState({
+    //     requestedReviews : reversed
+    //   })
+    //   console.log(this.state.requestedReviews, sortedRequests, reversed)
+    // }
+
     async handleRequestReview(selectedOptions){
       let numPeople = this.state.selectedRequestReviewers?this.state.selectedRequestReviewers.length:0;
       let peopleStr = "";
@@ -157,12 +176,42 @@ class WriteRequestReviews extends React.Component {
               </Row>
             </Container>
             </div>
-            <div className = "write-reviews">//edited
+            <div className = "write-reviews">
+              <Container fluid='sm'>
+              <p style={requeststyle}>
+                <Row>
+                  <Col>
+                    Name
+                  </Col>
+                  <Col></Col>
+                  <Col>
+                    <button style={sortstyle} onClick = {() => this.handleSortByDate()}>↑↓Date</button>
+                    
+                  </Col>
+                </Row>
+                </p>
+              </Container>
               <Requests key={"key"} requests={ this.state.requestedReviews} logInToken={this.props.logInToken}/>
             </div>
           </div>
         );
       }
+}
+
+const requeststyle = {
+  margin: '15px',
+  padding: '15px',
+'backgroundColor': '#FFF',
+'borderRadius': '8px',
+'boxShadow': '0px 0px 10px rgba(0, 0, 0, 0.2)'
+}
+
+const sortstyle = {
+  border: 'none',
+  backgroundColor: 'inherit',
+  fontSize: '16px',
+  cursor: 'pointer',
+  display: 'inline-block'
 }
 
 export default WriteRequestReviews;
