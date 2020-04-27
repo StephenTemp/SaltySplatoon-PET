@@ -86,8 +86,8 @@ def get_requested_reviews(email):
     for employee in requests.find({"reviewer_id": cur_employee_id, "companyId": cur_employee_company_id, "rejected": False, "complete": False}): # find all data that reviewer is current user
         cur_requester = employee_data.find_one({"employeeId": employee["requester_id"]}) # find current requester's data from "employee_data".
         cur_requester_name = cur_requester["firstName"] + " " + cur_requester["lastName"] # get cureent requester's name.
-        
-        
+
+
         review_content_doc = review_contents.find_one({"_id": employee["review_content_id"]})
         review_content = review_content_doc["content"]
         requestes_list.append({"requester": cur_requester_name, "date": employee["date"], "review_content_id": str(employee["review_content_id"]), "request_id": str(employee["_id"]), "content": review_content}) # push requester's name, request's date, review_content_id and current request id to return list.
@@ -107,8 +107,8 @@ def save_review(json):
 
 
     saved_at_time = datetime.datetime.now()
-    
-    
+
+
     save_query = {"_id" : review_content_id}
 
     save_new = {"$set" : {"content": content, "date": saved_at_time}}
@@ -140,7 +140,11 @@ def reject_review(json):
     return jsonify(), 200
 
 def send_review(json):
+    print('TEST--------------')
     PET_db = client["PET"]
+
+    # get collection "requests"
+    requests = PET_db["requests"]
 
     # get request id
     request_id = json['_id']

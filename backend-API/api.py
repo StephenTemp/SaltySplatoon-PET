@@ -94,8 +94,18 @@ def validate_username_and_password(username, password):
         return False
 
 @app.route('/get-reviews', methods=['POST'])
+@jwt_optional
 def get_reviews():
-    return review_page.get_reviews(get_jwt_identity())
+    email = request.get_json()["employee_emails"]
+    if email is None:
+        email = get_jwt_identity()
+        
+    return review_page.get_user_reviews(email)
+
+@app.route('/get_employees_of_manager', methods=['POST'])
+@jwt_optional
+def get_employees_of_manager():
+    return review_page.get_employees_of_manager(get_jwt_identity())
 
 @app.route('/get-possible-reviewers', methods=['POST'])
 @jwt_optional
