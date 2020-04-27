@@ -90,13 +90,51 @@ class WriteRequestReviews extends React.Component {
       })
     }
 
+    reversesort(input){
+      var output = Array.from(input)
+      while (input.length) {
+        output.push(input.pop());
+      }
+      input = output
+      return output
+    }
+
     handleSortByDate(){
       let copyRequests = [...this.state.requestedReviews]
-      const sortedRequests = copyRequests.sort((a, b) => b.date - a.date)
-      const reversed = sortedRequests.reverse()
-      this.setState({
-        requestedReviews : reversed
-      })
+      if (copyRequests.length>1){
+          // const originalRequest = [...this.state.requestedReviews]
+        const sortedRequests = copyRequests
+        const comp = (new Date(sortedRequests[1].date)-new Date(sortedRequests[0].date))
+        if(comp>0){
+          // console.log('date is min', sortedRequests, comp)
+          const rever = copyRequests.sort((a, b) => b.date.localeCompare(a.date))
+          this.setState({
+            requestedReviews : rever
+          })
+        }
+        else{
+          // console.log(new Date(copyRequests[1].date)-new Date(copyRequests[0].date), '=======', sortedRequests)
+          const rever = copyRequests.sort((a, b) => a.date.localeCompare(b.date))
+          this.setState({
+            requestedReviews : rever
+          })
+        }
+      }
+      
+      // if (originalRequest.join(',') === sortedRequests.join(',')){
+      //   const rever = Array.from(this.reversesort(sortedRequests))
+      //   console.log(sortedRequests,'same', reversed, 'reversed', rever)
+      //   this.setState({
+      //     requestedReviews : rever
+      //   })
+      // }
+      // else{
+      //   console.log('not same')
+      //   this.setState({
+      //     requestedReviews : reversed
+      //   })
+      // }
+      // const reversed = sortedRequests.reverse()
     }
 
     // handleSortByName(){
