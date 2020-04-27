@@ -1,3 +1,4 @@
+import os
 import time
 from flask import Flask, jsonify, request
 from bson.objectid import ObjectId
@@ -5,6 +6,7 @@ from flask_jwt_extended import (
     JWTManager, jwt_required, jwt_optional, create_access_token,
     get_jwt_identity
 )
+from pymongo import MongoClient
 
 import review_page
 import request_write_page
@@ -27,19 +29,31 @@ def login():
     username = request.json.get('username', None)
     password = request.json.get('password', None)
     if not username:
-        return jsonify({"msg": "Missing username parameter"}), 400
+        return jsonify({"msg": "Missing Email", "access_token": ""}), 400
     if not password:
-        return jsonify({"msg": "Missing password parameter"}), 400
+        return jsonify({"msg": "Missing Password", "access_token": ""}), 400
 
     possible_valid_credentials = validate_username_and_password(username, password)
 
     if possible_valid_credentials:
         # Identity can be any data that is json serializable
         access_token = create_access_token(identity=username)
-        return jsonify(access_token=access_token), 200
+
+        client = MongoClient('mongodb://localhost:27017/')
+        current_user_email = username
+        PET_db = client["PET"]
+
+        employee_data = PET_db["employee_data"]
+        # Find the first employee with the same email as the current user
+        current_employee = employee_data.find_one({"email": current_user_email})
+        employee_name = ""
+        if current_employee:
+            employee_name = current_employee["firstName"] + " " + current_employee["lastName"]
+
+        return jsonify(access_token=access_token, name=employee_name), 200
 
     else:
-        return jsonify({"msg": "Bad username or password"}), 401
+        return jsonify({"msg": "Incorrect email or password", "access_token": ""}), 401
 
 
 @app.route('/get-username', methods=['POST'])
@@ -47,11 +61,16 @@ def login():
 def partially_protected():
     # If no JWT is sent in with the request, get_jwt_identity()
     # will return None
-    current_user = get_jwt_identity()
-    if current_user:
-        return jsonify(user=current_user), 200
-    else:
-        return jsonify(user='anonymous user'), 200
+    client = MongoClient('mongodb://localhost:27017/')
+    current_user_email = get_jwt_identity()
+    PET_db = client["PET"]
+
+    employee_data = PET_db["employee_data"]
+    # Find the first employee with the same email as the current user
+    current_employee = employee_data.find_one({"email": current_user_email})
+    employee_name = current_employee["firstName"] + " " + current_employee["lastName"]
+    
+    return jsonify(user=employee_name), 200
 
 
 def validate_username_and_password(username, password):
@@ -59,7 +78,20 @@ def validate_username_and_password(username, password):
     #     return False
     # else:
     #     return username
-    return username
+    
+    if password == "123" and os.environ.get("FLASK_ENV") == "development":
+        return True
+    client = MongoClient('mongodb://localhost:27017/')
+    PET_db = client["PET"]
+
+    employee_data = PET_db["employee_data"]
+    # Find the first employee with the same email as the current user
+    current_employee = employee_data.find_one({"email": username, "password": password})
+    
+    if current_employee:
+        return username
+    else:
+        return False
 
 @app.route('/get-reviews', methods=['POST'])
 @jwt_optional

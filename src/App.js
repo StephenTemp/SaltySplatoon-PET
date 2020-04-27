@@ -29,7 +29,8 @@ class App extends React.Component {
       logInToken: "",
       email: "",
       password: "123",
-      name: ""
+      name: "",
+      msg: ""
     };
     // this.submitForm = this.submitForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -59,8 +60,18 @@ class App extends React.Component {
 
   submitForm(e) {
     e.preventDefault();
-    console.log(`Email: ${ this.state.email }`)
-    
+    if (!this.state.email) {
+      this.setState({
+        msg: 'Please enter an Email.'
+      });
+      return;
+    }
+    if (!this.state.password) {
+      this.setState({
+        msg: 'Please enter a Password.'
+      });
+      return;
+    }
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -71,7 +82,9 @@ class App extends React.Component {
       .then(response => response.json())
       .then(data =>
         this.setState({
-          logInToken: data.access_token
+          logInToken: data.access_token,
+          name: data.name,
+          msg: data.msg
         })
       );
   }
@@ -94,8 +107,11 @@ class App extends React.Component {
               <Button tag = {Link} id='viewbtn' to="/viewreviews">View Reviews</Button>{" "}
               <Button tag = {Link} id='writebtn' to="/writerequestreviews">Write Request Reviews</Button>
             </Col>
-            <div style={{"position": "absolute", "right": "0px", "padding-right": "30px"}}>
+            <div style={{ "padding-right": "50px", "padding-top": "5px"}}>
+              <Row>
+              <div style={{"padding-right": "20px", "padding-top": "6px"}}>{"Hi " + this.state.name + "!"}</div>
               <Button tag = {Link} id='signout' to="/" onClick={() =>this.setState({logInToken: "", email: "", password: "123",})}>Sign Out</Button>
+              </Row>
             </div>
           </Row>
           {/* <li>
@@ -155,6 +171,7 @@ class App extends React.Component {
                 type="email"
                 name="email"
                 id="exampleEmail"
+                value={ this.state.email }
                 placeholder="myemail@email.com"
                 onChange={ (e) => this.handleChange(e) }
               />
@@ -166,11 +183,12 @@ class App extends React.Component {
               <Input
                 type="password"
                 name="password"
-                value="123"
+                value={ this.state.password }
                 id="examplePassword"
                 placeholder="********"
                 onChange={ (e) => this.handleChange(e) }
               />
+              <Label>{this.state.msg}</Label>
             </FormGroup>
           </Col >
           <Col sm="12" md={{ size: 6, offset: 3 }}>
