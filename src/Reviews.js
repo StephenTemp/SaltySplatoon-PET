@@ -45,9 +45,9 @@ class Reviews extends React.Component {
                     <p onClick = {() => this.handleCollapse(index)}>
                         <Container>
                             <Row>
-                            	<Col>
+                            	{/* <Col>
                                     <h4 style={h4inlinestyle}>{ review.reviewer_id }</h4>
-                                </Col>
+                                </Col> */}
                                 <Col>
                                     <h4 style={h4inlinestyle}>{ review.reviewer_lastname }</h4>
                                 </Col>
