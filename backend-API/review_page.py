@@ -7,9 +7,9 @@ client = MongoClient('mongodb://localhost:27017/')
 def get_user_reviews(email):
     PET_db = client["PET"]
     #print("Email: " + email)
-    
+
     # initialize review list
-    reviews_list = [] 
+    reviews_list = []
 
     # get requests and review_content data
     requests = PET_db["requests"]
@@ -28,7 +28,7 @@ def get_user_reviews(email):
             # get reviewer data and review content and append
             cur_reviewer = employee_data.find_one({"employeeId": review["reviewer_id"]})
             cur_review = review_content.find_one({"_id": review["review_content_id"]})
-            reviews_list.append({"reviewer_id": cur_reviewer["employeeId"], "reviewer_lastname": cur_reviewer["lastName"], "reviewer_firstname": cur_reviewer["firstName"], "review": cur_review["content"], "date": cur_review["date"]})
+            reviews_list.append({"reviewer_id": cur_reviewer["employeeId"], "reviewer_lastname": cur_reviewer["lastName"], "reviewer_firstname": cur_reviewer["firstName"], "review": cur_review["content"], "date": cur_review["date"].strftime("%I:%M")})
 
     return jsonify(reviews_list=reviews_list), 200 # add more if needed
 
@@ -46,9 +46,9 @@ def get_managers():
         if hasattr(employee, "managerId"):
             cur_manager_name = employee["firstName"] + " " + employee["lastName"]
             managers_list.append({"id": employee["employeeId"],"manager": cur_manager_name})
-    
+
     return jsonify(managers_list=managers_list), 200
-        
+
 def get_employees_of_manager(email):
     PET_db = client["PET"]
     # initialize employees of manager liste
@@ -64,7 +64,5 @@ def get_employees_of_manager(email):
     #get every employee who has the given managerId
     for employee in employees.find({"managerId": managerId}):
         employees_of_manager.append({"value": employee["email"], "label": employee["firstName"] + " " + employee["lastName"]})
-    
+
     return jsonify(employees_of_manager=employees_of_manager), 200
-
-
