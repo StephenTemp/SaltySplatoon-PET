@@ -131,6 +131,33 @@ class ViewReviews extends React.Component {
       })
     }
 
+    handleSortByDate(){
+      let copyReviews = [...this.state.userReviews]
+      if (copyReviews.length > 1){
+          // const originalRequest = [...this.state.requestedReviews]
+        const sortedReviews = copyReviews
+        const time1 = parseInt(sortedReviews[1].date.substring(0,2))*60+parseInt(sortedReviews[1].date.substring(3,5))
+        const time2 = parseInt(sortedReviews[0].date.substring(0,2))*60+parseInt(sortedReviews[0].date.substring(3,5))
+        const comp = (time1-time2)
+        if(comp>0){
+          // console.log('date is min', sortedReviews, comp)
+          const rever = copyReviews.sort((a, b) => b.date.localeCompare(a.date))
+          this.setState({
+            userReviews : rever
+          })
+        }
+        else{
+          // console.log(time1)
+          // console.log(new Date(copyReviews[1].date)-new Date(copyReviews[0].date), '=======', sortedReviews)
+          const rever = copyReviews.sort((a, b) => a.date.localeCompare(b.date))
+          this.setState({
+            userReviews : rever
+          })
+        }
+      }
+      
+    }
+
     render() {
       //console.log(this.state.userReviews)
         return (
@@ -160,12 +187,16 @@ class ViewReviews extends React.Component {
               </Container>
             </div>
             <Container fluid='sm'>
+              <p style={Reviewstyle}> 
               <Row>
-                <Col>userID</Col>
+                {/* <Col>userID</Col> */}
                 <Col>Coworker Last Name</Col>
                 <Col>Coworker First Name</Col>
-                <Col>Time Posted</Col>
+                <Col>
+                  <button style={sortstyle} onClick = {() => this.handleSortByDate()}>↑↓Time Posted</button>
+                </Col>
               </Row>
+              </p>
             </Container>
             <div className = "view-reviews">
               <Review key={"key"} reviews={ this.state.userReviews } logInToken={this.props.logInToken}/>
@@ -192,6 +223,22 @@ class ViewReviews extends React.Component {
           </div>
         );
       }
+}
+
+const Reviewstyle = {
+  margin: '15px',
+  padding: '15px',
+'backgroundColor': '#FFF',
+'borderRadius': '8px',
+'boxShadow': '0px 0px 10px rgba(0, 0, 0, 0.2)'
+}
+
+const sortstyle = {
+  border: 'none',
+  backgroundColor: 'inherit',
+  fontSize: '16px',
+  cursor: 'pointer',
+  display: 'inline-block'
 }
 
 export default ViewReviews;
