@@ -51,7 +51,8 @@ class ViewReviews extends React.Component {
           fakeReviews: fakeReviews,
           reviewer: "Reviewer 1",
           employeeValue: [],
-          selectedEmployee: []
+          selectedEmployee: [],
+          currentName: "Myself"
         };
         this.handleEmployeeChange = this.handleEmployeeChange.bind(this)
         this.handleViewEmployee = this.handleViewEmployee.bind(this)
@@ -105,8 +106,9 @@ class ViewReviews extends React.Component {
         )
       );
       this.setState({
+      	currentName: this.state.selectedEmployee.label,
         selectedEmployee: [],
-        employeeValue: []
+        employeeValue: [],
       })
     }
 
@@ -126,6 +128,7 @@ class ViewReviews extends React.Component {
         )
       );
       this.setState({
+      	currentName: "Myself",
         selectedEmployee: [],
         employeeValue: []
       })
@@ -166,7 +169,7 @@ class ViewReviews extends React.Component {
               <Container fluid='sm'>
                 <Row>
                   <Col xs='auto'>
-                    <h3 style={{display: 'flex', justifyContent: 'left'}}>Reviews for Current User</h3>
+                    <h3 style={{display: 'flex', justifyContent: 'left'}}>Reviews for {this.state.currentName}</h3>
                   </Col>
                   <Col></Col>
                   <Col xs='2'>
