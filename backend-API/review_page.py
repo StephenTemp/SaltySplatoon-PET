@@ -2,9 +2,10 @@ from pymongo import MongoClient
 from flask import jsonify
 import datetime
 
-client = MongoClient('mongodb://localhost:27017/')
+
 
 def get_user_reviews(email):
+    client = MongoClient('mongodb://localhost:27017/')
     PET_db = client["PET"]
     #print("Email: " + email)
 
@@ -33,6 +34,7 @@ def get_user_reviews(email):
     return jsonify(reviews_list=reviews_list), 200 # add more if needed
 
 def get_managers():
+    client = MongoClient('mongodb://localhost:27017/')
     PET_db = client["PET"]
 
     # initialize managers list
@@ -50,6 +52,7 @@ def get_managers():
     return jsonify(managers_list=managers_list), 200
 
 def get_employees_of_manager(email):
+    client = MongoClient('mongodb://localhost:27017/')
     PET_db = client["PET"]
     # initialize employees of manager liste
     employees_of_manager = []
