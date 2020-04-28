@@ -103,7 +103,7 @@ class App extends React.Component {
           <Row style={{"padding-left": "30px"}}>
             <Col>
               <Button tag = {Link} id='homebtn' to="/">Home</Button>{" "}
-              <Button tag = {Link} id='profilebtn' to="/profile">Profile</Button>{" "}
+              {/* <Button tag = {Link} id='profilebtn' to="/profile">Profile</Button>{" "} */}
               <Button tag = {Link} id='viewbtn' to="/viewreviews">View Reviews</Button>{" "}
               <Button tag = {Link} id='writebtn' to="/writerequestreviews">Write Request Reviews</Button>
             </Col>
