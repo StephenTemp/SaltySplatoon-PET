@@ -2,9 +2,9 @@ from pymongo import MongoClient
 from flask import jsonify
 import datetime
 
-client = MongoClient('mongodb://localhost:27017/')
 
 def get_possible_reviewers(email):
+    client = MongoClient('mongodb://localhost:27017/')
     PET_db = client["PET"]
 
     employee_data = PET_db["employee_data"]
@@ -31,6 +31,7 @@ def get_possible_reviewers(email):
     return jsonify(possible_reviewers=possible_reviewers), 200
 
 def send_review_requests(email, json):
+    client = MongoClient('mongodb://localhost:27017/')
     PET_db = client["PET"]
 
     employee_data = PET_db["employee_data"]
@@ -67,6 +68,7 @@ def send_review_requests(email, json):
     return jsonify(), 200
 
 def get_requested_reviews(email):
+    client = MongoClient('mongodb://localhost:27017/')
     # find database "PET"
     PET_db = client["PET"]
 
@@ -96,7 +98,7 @@ def get_requested_reviews(email):
     return jsonify(requestes_list=requestes_list), 200
 
 def save_review(json):
-
+    client = MongoClient('mongodb://localhost:27017/')
     PET_db = client["PET"]
 
     review_content = PET_db["review_content"]
@@ -140,6 +142,7 @@ def reject_review(json):
     return jsonify(), 200
 
 def send_review(json):
+    client = MongoClient('mongodb://localhost:27017/')
     print('TEST--------------')
     PET_db = client["PET"]
 
