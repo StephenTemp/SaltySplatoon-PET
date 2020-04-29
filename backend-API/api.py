@@ -11,11 +11,18 @@ from pymongo import MongoClient
 import review_page
 import request_write_page
 
-app = Flask(__name__)
+# app = Flask(__name__)
+app = Flask(__name__, static_folder='../build', static_url_path='/')
+
 
 # Setup the Flask-JWT-Extended extension
 app.config['JWT_SECRET_KEY'] = 'super-secret-splatoon'  # Change this!
 jwt = JWTManager(app)
+
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
+
 
 # Provide a method to create access tokens. The create_access_token()
 # function is used to actually generate the token, and you can return
