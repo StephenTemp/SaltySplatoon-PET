@@ -1,5 +1,5 @@
 cd backend-API
 sudo systemctl start mongod
-flask run -h http://18.207.108.18/ -p 3000
+flask run -h 18.207.108.18 -p 3000
 sudo systemctl stop mongod
 deactivate
