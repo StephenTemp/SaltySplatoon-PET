@@ -1,5 +1,5 @@
 cd backend-API
 sudo systemctl start mongod
-flask run
+flask run -h localhost -p 3000
 sudo systemctl stop mongod
 deactivate
