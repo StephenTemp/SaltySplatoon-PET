@@ -19,9 +19,6 @@ app = Flask(__name__, static_folder='../build', static_url_path='/')
 app.config['JWT_SECRET_KEY'] = 'super-secret-splatoon'  # Change this!
 jwt = JWTManager(app)
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0')
-
 @app.route('/')
 def index():
     return app.send_static_file('index.html')
@@ -155,5 +152,8 @@ def get_current_time():
     print("time started")
     return {'time': time.time()}
 
-if __name__ == '__main__':
-    app.run()
+# if __name__ == '__main__':
+#     app.run()
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
