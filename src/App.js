@@ -19,6 +19,8 @@ import ViewReviews from './ViewReviews'
 import WriteRequestReviews from './WriteRequestReviews'
 //import './components/layouts/Header.css'
 
+import logo from './logo.png';
+
 
 class App extends React.Component {
 
@@ -162,6 +164,7 @@ class App extends React.Component {
           )
         : 
         <Container className="App" fluid="sm" style={{"margin-top": "100px", "text-align": "left", "transform": "translate(-50%,-100%)", "left": "50%", "top": "50%", "position": "absolute"}}>
+        <img src={logo} alt="logo" style={{"display": "block", "margin":"0 auto", "height": "182px", "width": "252px"}}/>
         <h2 style={{"text-align": "center"}}>Sign In</h2>
         <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
           <Col sm="12" md={{ size: 6, offset: 3 }}>
