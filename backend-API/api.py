@@ -156,9 +156,9 @@ def get_current_time():
 # if __name__ == '__main__':
 #     app.run()
 
-used_port = 5000
-if (len(sys.argv) > 1):
-    used_port = int(sys.argv[1])
+used_port = 80
+# if (len(sys.argv) > 1):
+#     used_port = int(sys.argv[1])
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=used_port)
