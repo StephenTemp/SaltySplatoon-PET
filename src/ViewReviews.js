@@ -167,6 +167,8 @@ class ViewReviews extends React.Component {
           <div className="App">
             <div className="view-employees">
               <Container fluid='sm'>
+              {this.state.myEmployees.length>0 ? 
+                  (
                 <Row>
                   <Col xs='auto'>
                     <h3 style={{display: 'flex', justifyContent: 'left'}}>Reviews for {this.state.currentName}</h3>
@@ -186,7 +188,7 @@ class ViewReviews extends React.Component {
                   <Col xs='2'>
                     <Button color = {'primary'} onClick = {(selectedOptions) => this.handleViewEmployee(selectedOptions)}>Change Employee</Button>
                   </Col>
-                </Row>
+                </Row>) : <h3 style={{display: 'flex', justifyContent: 'left'}}>Reviews for {this.state.currentName}</h3>}
               </Container>
             </div>
             <Container fluid='sm'>
