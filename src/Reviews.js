@@ -48,6 +48,12 @@ class Reviews extends React.Component {
                             	{/* <Col>
                                     <h4 style={h4inlinestyle}>{ review.reviewer_id }</h4>
                                 </Col> */}
+								<Col xs="auto">
+                                    <p>
+                                       <div>{this.state.reviews[index].collapsed ? "▼" : ""}</div>
+                                        <div style={{"transform": "rotate(-90deg)"}}>{(!this.state.reviews[index].collapsed) ? "▼" : ""}</div>
+                                    </p>
+                                </Col>
                                 <Col>
                                     <h4 style={h4inlinestyle}>{ review.reviewer_lastname }</h4>
                                 </Col>

@@ -12,6 +12,7 @@ class Requests extends React.Component {
             requests: this.props.requests,
             c: true
         }
+
         this.handleCollapse = this.handleCollapse.bind(this);
         this.handleRejectReview = this.handleRejectReview.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
@@ -21,6 +22,7 @@ class Requests extends React.Component {
         let requestsCopy = [...this.state.requests];
         // console.log(requestsCopy);
         requestsCopy[index].collapsed = !requestsCopy[index].collapsed;
+        requestsCopy[index].text_length_left = requestsCopy[index].content.length
         this.setState({
             requests: requestsCopy
         })
@@ -72,16 +74,15 @@ class Requests extends React.Component {
 
 
     handleTextChange(e, ind) {
-        // console.log("New text for " + ind + "is: " + e.target.value)
-        //console.log("Word count is: " + e.target.value.trim().split(" ").length);
-        // console.log("Char count is: " + e.target.value.length);
-        console.log(e.target.value)
+
+        let textContent = e.target.value
+        if (textContent.length > 5000) {
+            textContent = textContent.slice(0, 5000)
+        }
         this.setState({ requests: this.state.requests.map((request, index) => {
             if (index === ind){
-                // console.log(e.target.value.length)
-                // console.log(request.requesterName)
-                request.text_length_left = e.target.value.length
-                request.content = e.target.value;
+                request.text_length_left = textContent.length
+                request.content = textContent;
             }
             return request
         })
@@ -192,7 +193,17 @@ class Requests extends React.Component {
                         <Container>
                             <Row>
                                 <Col>
-                                    <h3 style={h3inlinestyle}>{ request.requester }</h3>
+                                    <Row>
+                                        <Col xs="auto">
+                                            <p>
+                                                <div>{this.state.requests[index].collapsed ? "▼" : ""}</div>
+                                                <div style={{"transform": "rotate(-90deg)"}}>{(!this.state.requests[index].collapsed) ? "▼" : ""}</div>
+                                            </p>
+                                        </Col>
+                                        <Col>
+                                            <h3 style={h3inlinestyle}>{ request.requester }</h3>
+                                        </Col>
+                                    </Row>
                                 </Col>
                                 <Col>
                                     <h4 style={h4inlinestyle}>{ request.date.split(" ")[0]+" "+request.date.split(" ")[1]+" "+request.date.split(" ")[2] }</h4>

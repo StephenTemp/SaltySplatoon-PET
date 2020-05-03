@@ -193,6 +193,11 @@ class ViewReviews extends React.Component {
               <p style={Reviewstyle}> 
               <Row>
                 {/* <Col>userID</Col> */}
+                <Col xs="auto">
+                                    <p>
+                                       {" "}
+                                    </p>
+                                </Col>
                 <Col>Coworker Last Name</Col>
                 <Col>Coworker First Name</Col>
                 <Col>
