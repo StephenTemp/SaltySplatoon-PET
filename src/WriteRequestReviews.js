@@ -2,7 +2,7 @@ import React from 'react'
 import './App.css';
 import Requests from './Requests';
 import Select from 'react-select';
-import {Container, Row, Col, Button} from 'reactstrap'
+import {Container, Row, Col, Button, Alert} from 'reactstrap'
 import confirm from "./ConfirmModal";
 
 class WriteRequestReviews extends React.Component {
@@ -51,13 +51,15 @@ class WriteRequestReviews extends React.Component {
           fakeRequests: fakeRequests,
           reviewer: "Reviewer 1",
           requestsValue: [],
-          selectedRequestReviewers: []
+          selectedRequestReviewers: [],
+          showAlert: false,
+          alertText: "test text"
         };
         this.handleRequestReview = this.handleRequestReview.bind(this)
         this.handleRequestChange = this.handleRequestChange.bind(this)
+        this.showAlert = this.showAlert.bind(this)
+        this.hideAlert = this.hideAlert.bind(this)
     }
-
-
 
     componentDidMount(){
       const requestOptions = {
@@ -81,6 +83,20 @@ class WriteRequestReviews extends React.Component {
           }
         )
       );
+    }
+
+    showAlert(alert) {
+      this.setState({
+        showAlert: true,
+        alertText: alert
+      })
+      setTimeout(this.hideAlert, 2000)
+    }
+
+    hideAlert() {
+      this.setState({
+        showAlert: false
+      })
     }
 
     handleRequestChange(selectedOptions){
@@ -159,9 +175,14 @@ class WriteRequestReviews extends React.Component {
         peopleStr+=this.state.selectedRequestReviewers[i].label
         requestEmails.push(this.state.selectedRequestReviewers[i].value)
       }
+
+      let plural = "reviews"
+            if (numPeople == 1) {
+              plural = "a review"
+            }
       if (await confirm(
         "Confirm Request Reviews",
-        numPeople>0 ? "Are you sure you want to request reviews from "+peopleStr+"?":"You have not selected anybody to request reviews from.",
+        numPeople>0 ? "Are you sure you want to request " + plural + " from "+peopleStr+"?":"You have not selected anybody to request reviews from.",
         "primary",
         "secondary",
         numPeople>0?"Yes":"Okay",
@@ -172,14 +193,13 @@ class WriteRequestReviews extends React.Component {
             headers: { 'Authorization': 'Bearer ' + this.state.logInToken, 'Content-Type': 'application/json' },
             body: JSON.stringify({reviewer_emails: requestEmails})
           };
-          fetch('/send-review-requests', requestOptions)
-            .then(response => response.json())
-            .then(data =>
-              this.setState({
-
-              }
-            )
-          );
+          if (numPeople > 0) {
+              fetch('/send-review-requests', requestOptions)
+              .then(response => response.json())
+              .then(data =>
+                this.showAlert("You have successfully requested " + plural + " from "+peopleStr+".")
+            );
+          }
           this.setState({
             selectedRequestReviewers: [],
             requestsValue: []
@@ -194,6 +214,9 @@ class WriteRequestReviews extends React.Component {
           <div className="App">
             <div className = "request-reviews">
             <Container fluid='sm'>
+              <Alert color="secondary" isOpen={this.state.showAlert}>
+                {this.state.alertText}
+              </Alert>
               <Row>
                 <Col xs='auto'>
                   <h3 style={{display: 'flex', justifyContent: 'left'}}>Requests for You</h3>
@@ -229,7 +252,7 @@ class WriteRequestReviews extends React.Component {
                 </Row>
                 </p>
               </Container>
-              <Requests key={"key"} requests={ this.state.requestedReviews} logInToken={this.props.logInToken}/>
+              <Requests key={"key"} showAlert = {(alert) => this.showAlert(alert)} requests={ this.state.requestedReviews} logInToken={this.props.logInToken}/>
             </div>
           </div>
         );

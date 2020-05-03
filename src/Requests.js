@@ -52,13 +52,11 @@ class Requests extends React.Component {
                 headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
                 body: JSON.stringify({"_id" : this.state.requests[index]['request_id']})
               };
+              let name = this.state.requests[index]["requester"]
               fetch('/reject_review', requestOptions)
                 .then(response => response.json())
                 .then(data =>
-                  this.setState({
-
-                  }
-                )
+                    this.props.showAlert("You have successfully rejected a request from "+name+".")
               );
 
             delete this.state.requests[index];
@@ -139,13 +137,11 @@ class Requests extends React.Component {
                 headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
                 body: JSON.stringify({"_id" : this.state.requests[index]['request_id']})
               };
+              let name = this.state.requests[index]["requester"]
               fetch('/send_review', requestOptions)
                 .then(response => response.json())
                 .then(data =>
-                  this.setState({
-
-                  }
-                )
+                    this.props.showAlert("You have successfully sent a review to "+name+".")
               );
 
             // Save the review
