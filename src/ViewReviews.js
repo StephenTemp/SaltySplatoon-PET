@@ -162,7 +162,11 @@ class ViewReviews extends React.Component {
     }
 
     render() {
-      //console.log(this.state.userReviews)
+
+        let employeeNames = []
+        for (let i = 0; i < this.state.myEmployees.length; i++) {
+          employeeNames.push(this.state.myEmployees[i].label)
+        }
         return (
           <div className="App">
             <div className="view-employees">
@@ -186,7 +190,7 @@ class ViewReviews extends React.Component {
                       placeholder={"View Employees"}/>
                   </Col>
                   <Col xs='2'>
-                    <Button color = {'primary'} onClick = {(selectedOptions) => this.handleViewEmployee(selectedOptions)}>Change Employee</Button>
+                    <Button color = {'primary'} disabled = {employeeNames.indexOf(this.state.employeeValue.label) < 0} onClick = {(selectedOptions) => this.handleViewEmployee(selectedOptions)}>Change Employee</Button>
                   </Col>
                 </Row>) : <h3 style={{display: 'flex', justifyContent: 'left'}}>Reviews for {this.state.currentName}</h3>}
               </Container>

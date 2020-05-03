@@ -18,6 +18,7 @@ app = Flask(__name__, static_folder='../build', static_url_path='/')
 
 # Setup the Flask-JWT-Extended extension
 app.config['JWT_SECRET_KEY'] = 'super-secret-splatoon'  # Change this!
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = False
 jwt = JWTManager(app)
 
 @app.route('/')
@@ -30,6 +31,8 @@ def index():
 # it to the caller however you choose.
 @app.route('/login', methods=['POST', 'GET'])
 def login():
+
+    print(app.config["JWT_ACCESS_TOKEN_EXPIRES"])
 
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
