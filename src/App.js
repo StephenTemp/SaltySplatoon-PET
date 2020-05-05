@@ -30,7 +30,7 @@ class App extends React.Component {
       currentTime: 0,
       logInToken: "",
       email: "",
-      password: "123",
+      password: "",
       name: "",
       msg: ""
     };
@@ -112,7 +112,7 @@ class App extends React.Component {
             <div style={{ "padding-right": "50px", "padding-top": "5px"}}>
               <Row>
               <div style={{"padding-right": "20px", "padding-top": "6px"}}>{"Hi " + this.state.name + "!"}</div>
-              <Button tag = {Link} id='signout' to="/" onClick={() =>this.setState({logInToken: "", email: "", password: "123",})}>Sign Out</Button>
+              <Button tag = {Link} id='signout' to="/" onClick={() =>this.setState({logInToken: "", email: "", password: "",})}>Sign Out</Button>
               </Row>
             </div>
           </Row>
