@@ -59,6 +59,7 @@ class WriteRequestReviews extends React.Component {
         this.handleRequestChange = this.handleRequestChange.bind(this)
         this.showAlert = this.showAlert.bind(this)
         this.hideAlert = this.hideAlert.bind(this)
+        this.setRequests = this.setRequests.bind(this)
     }
 
     componentDidMount(){
@@ -83,6 +84,12 @@ class WriteRequestReviews extends React.Component {
           }
         )
       );
+    }
+
+    setRequests(requests) {
+      this.setState({
+        requestedReviews: requests,
+      })
     }
 
     showAlert(alert) {
@@ -116,7 +123,7 @@ class WriteRequestReviews extends React.Component {
     }
 
     handleSortByDate(){
-      let copyRequests = [...this.state.requestedReviews]
+      let copyRequests = [...this.state.requestedReviews].filter(e => e != null);
       if (copyRequests.length>1){
           // const originalRequest = [...this.state.requestedReviews]
         const sortedRequests = copyRequests
@@ -252,7 +259,7 @@ class WriteRequestReviews extends React.Component {
                 </Row>
                 </p>
               </Container>
-              <Requests key={"key"} showAlert = {(alert) => this.showAlert(alert)} requests={ this.state.requestedReviews} logInToken={this.props.logInToken}/>
+              <Requests key={"key"} setRequests = {(requests) => this.setRequests(requests)} showAlert = {(alert) => this.showAlert(alert)} requests={ this.state.requestedReviews} logInToken={this.props.logInToken}/>
             </div>
           </div>
         );

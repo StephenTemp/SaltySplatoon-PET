@@ -28,7 +28,6 @@ class Requests extends React.Component {
         })
     }
 
-
     componentWillReceiveProps(nextProps){
         this.setState({
             requests: nextProps.requests
@@ -47,24 +46,24 @@ class Requests extends React.Component {
             "Cancel"
             )) {
 
-              const requestOptions = {
-                method: 'POST',
-                headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
-                body: JSON.stringify({"_id" : this.state.requests[index]['request_id']})
-              };
-              let name = this.state.requests[index]["requester"]
-              fetch('/reject_review', requestOptions)
-                .then(response => response.json())
-                .then(data =>
-                    this.props.showAlert("You have successfully rejected a request from "+name+".")
-              );
+                const requestOptions = {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({"_id" : this.state.requests[index]['request_id']})
+                };
+                let name = this.state.requests[index]["requester"]
+                delete this.state.requests[index];
+                this.setState({
+                    requests: this.state.requests
+                })
+                this.props.setRequests(this.state.requests)
+                fetch('/reject_review', requestOptions)
+                    .then(response => response.json())
+                    .then(data =>
+                        this.props.showAlert("You have successfully rejected a request from "+name+".")
+                );
 
-            delete this.state.requests[index];
-            this.setState({
-                requests: this.state.requests
-            })
-
-
+            
         } else {
 
         }
@@ -118,43 +117,38 @@ class Requests extends React.Component {
             "Cancel"
             )) {
 
-              const saveRequestOptions = {
-                  method: 'POST',
-                  headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
-                  body: JSON.stringify({"review_content_id" : this.state.requests[index]['review_content_id'], "content" : this.state.requests[index]['content']})
-              };
-              fetch('/save_review', saveRequestOptions)
-              // .then(res => res.text())          // convert to plain text
-              // .then(text => console.log(text))
-              .then(response => response.json())
-              .then(data =>
-                  {}
-              );
-
-              //IN PROGRESS
-              const requestOptions = {
-                method: 'POST',
-                headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
-                body: JSON.stringify({"_id" : this.state.requests[index]['request_id']})
-              };
-              let name = this.state.requests[index]["requester"]
-              fetch('/send_review', requestOptions)
+                const saveRequestOptions = {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({"review_content_id" : this.state.requests[index]['review_content_id'], "content" : this.state.requests[index]['content']})
+                };
+                fetch('/save_review', saveRequestOptions)
+                // .then(res => res.text())          // convert to plain text
+                // .then(text => console.log(text))
                 .then(response => response.json())
                 .then(data =>
-                    this.props.showAlert("You have successfully sent a review to "+name+".")
-              );
+                    {}
+                );
 
-            // Save the review
-            let saveContent = document.getElementById('textarea').value
-            // this.setState({ requests: this.state.requests.map(request => {
+                //IN PROGRESS
+                const requestOptions = {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer ' + this.props.logInToken, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({"_id" : this.state.requests[index]['request_id']})
+                };
+                let name = this.state.requests[index]["requester"]
 
-            // }) })
-
-            delete this.state.requests[index];
-            this.setState({
-                requests: this.state.requests
-            })
-            // TODO Send the review
+                delete this.state.requests[index];
+                this.setState({
+                    requests: this.state.requests
+                })
+                this.props.setRequests(this.state.requests)
+                fetch('/send_review', requestOptions)
+                    .then(response => response.json())
+                    .then(data =>
+                        this.props.showAlert("You have successfully sent a review to "+name+".")
+                );
+            
         } else {
 
         }
