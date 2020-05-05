@@ -139,12 +139,14 @@ class ViewReviews extends React.Component {
       if (copyReviews.length > 1){
           // const originalRequest = [...this.state.requestedReviews]
         const sortedReviews = copyReviews
-        const time1 = parseInt(sortedReviews[1].date.substring(0,2))*60+parseInt(sortedReviews[1].date.substring(3,5))
-        const time2 = parseInt(sortedReviews[0].date.substring(0,2))*60+parseInt(sortedReviews[0].date.substring(3,5))
-        const comp = (time1-time2)
+        // const time1 = parseInt(sortedReviews[1].date.substring(0,2))*60+parseInt(sortedReviews[1].date.substring(3,5))
+        // const time2 = parseInt(sortedReviews[0].date.substring(0,2))*60+parseInt(sortedReviews[0].date.substring(3,5))
+        // const comp = (time1-time2)
+        const comp = (new Date(sortedReviews[1].date)-new Date(sortedReviews[0].date))
         if(comp>0){
           // console.log('date is min', sortedReviews, comp)
-          const rever = copyReviews.sort((a, b) => b.date.localeCompare(a.date))
+          
+          const rever = copyReviews.sort((b, a) => new Date(a.date) - new Date(b.date))
           this.setState({
             userReviews : rever
           })
@@ -152,7 +154,8 @@ class ViewReviews extends React.Component {
         else{
           // console.log(time1)
           // console.log(new Date(copyReviews[1].date)-new Date(copyReviews[0].date), '=======', sortedReviews)
-          const rever = copyReviews.sort((a, b) => a.date.localeCompare(b.date))
+          
+          const rever = copyReviews.sort((a, b) => new Date(a.date) - new Date(b.date))
           this.setState({
             userReviews : rever
           })
@@ -207,7 +210,7 @@ class ViewReviews extends React.Component {
                 <Col>Coworker Last Name</Col>
                 <Col>Coworker First Name</Col>
                 <Col>
-                  <button style={sortstyle} onClick = {() => this.handleSortByDate()}>↑↓Time Posted</button>
+                  <button style={sortstyle} onClick = {() => this.handleSortByDate()}>↑↓Date</button>
                 </Col>
               </Row>
               </p>

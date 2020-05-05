@@ -61,7 +61,7 @@ class Reviews extends React.Component {
                                 	<h4 style={h4inlinestyle}>{ review.reviewer_firstname }</h4>
                                 </Col>
                                 <Col>
-                                    <h4 style={h4inlinestyle}>{ review.date }</h4>
+                                    <h4 style={h4inlinestyle}>{ review.date.split(" ")[0]+" "+review.date.split(" ")[1]+" "+review.date.split(" ")[2] }</h4>
                                 </Col>
                             </Row>
                         </Container>

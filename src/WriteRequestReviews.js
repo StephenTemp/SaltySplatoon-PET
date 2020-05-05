@@ -130,14 +130,14 @@ class WriteRequestReviews extends React.Component {
         const comp = (new Date(sortedRequests[1].date)-new Date(sortedRequests[0].date))
         if(comp>0){
           // console.log('date is min', sortedRequests, comp)
-          const rever = copyRequests.sort((a, b) => b.date.localeCompare(a.date))
+          const rever = copyRequests.sort((b, a) => new Date(a.date) - new Date(b.date))
           this.setState({
             requestedReviews : rever
           })
         }
         else{
           // console.log(new Date(copyRequests[1].date)-new Date(copyRequests[0].date), '=======', sortedRequests)
-          const rever = copyRequests.sort((a, b) => a.date.localeCompare(b.date))
+          const rever = copyRequests.sort((a, b) => new Date(a.date) - new Date(b.date))
           this.setState({
             requestedReviews : rever
           })

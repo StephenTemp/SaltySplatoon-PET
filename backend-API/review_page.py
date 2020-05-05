@@ -29,7 +29,7 @@ def get_user_reviews(email):
             # get reviewer data and review content and append
             cur_reviewer = employee_data.find_one({"employeeId": review["reviewer_id"]})
             cur_review = review_content.find_one({"_id": review["review_content_id"]})
-            reviews_list.append({"reviewer_id": cur_reviewer["employeeId"], "reviewer_lastname": cur_reviewer["lastName"], "reviewer_firstname": cur_reviewer["firstName"], "review": cur_review["content"], "date": cur_review["date"].strftime("%I:%M")})
+            reviews_list.append({"reviewer_id": cur_reviewer["employeeId"], "reviewer_lastname": cur_reviewer["lastName"], "reviewer_firstname": cur_reviewer["firstName"], "review": cur_review["content"], "date": cur_review["date"]})
 
     return jsonify(reviews_list=reviews_list), 200 # add more if needed
 
