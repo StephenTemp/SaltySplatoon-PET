@@ -25,6 +25,13 @@ jwt = JWTManager(app)
 def index():
     return app.send_static_file('index.html')
 
+@app.route('/viewreviews')
+def view_reviews_page():
+    return app.send_static_file('index.html')
+
+@app.route('/writerequestreviews')
+def write_request_page():
+    return app.send_static_file('index.html')
 
 # Provide a method to create access tokens. The create_access_token()
 # function is used to actually generate the token, and you can return
